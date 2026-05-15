@@ -1,0 +1,107 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="720" height="1280" viewBox="0 0 720 1280" role="img" aria-label="向东渠事迹数字馆小程序目标UI参考图">
+  <defs>
+    <linearGradient id="paper" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0" stop-color="#fffaf1"/>
+      <stop offset="1" stop-color="#f3e4d2"/>
+    </linearGradient>
+    <linearGradient id="hero" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0" stop-color="#f7ead7"/>
+      <stop offset="0.55" stop-color="#d5b996"/>
+      <stop offset="1" stop-color="#80614c"/>
+    </linearGradient>
+    <linearGradient id="redRibbon" x1="0" y1="0" x2="1" y2="0">
+      <stop offset="0" stop-color="#7e0608"/>
+      <stop offset="0.35" stop-color="#c51a1d"/>
+      <stop offset="0.7" stop-color="#e43b25"/>
+      <stop offset="1" stop-color="#9a070b"/>
+    </linearGradient>
+    <filter id="shadow" x="-10%" y="-10%" width="120%" height="130%">
+      <feDropShadow dx="0" dy="10" stdDeviation="12" flood-color="#6f3b22" flood-opacity="0.16"/>
+    </filter>
+    <style>
+      .song { font-family: 'Songti SC', 'STSong', 'SimSun', serif; }
+      .sans { font-family: -apple-system, BlinkMacSystemFont, 'PingFang SC', 'Microsoft YaHei', sans-serif; }
+      .title { fill: #a61717; font-weight: 800; }
+      .ink { fill: #3d241b; }
+      .muted { fill: #7a4b39; }
+      .red { fill: #b10e12; }
+      .card { fill: rgba(255,253,248,0.96); stroke: #ecd8bf; stroke-width: 1.5; filter: url(#shadow); }
+      .cardLite { fill: #fffaf2; stroke: #ecd8bf; stroke-width: 1.2; }
+      .more { fill: #7a3b2a; font-size: 22px; }
+      .sectionTitle { fill: #24150f; font-size: 34px; font-weight: 700; }
+      .small { font-size: 21px; }
+      .label { fill: #4a2418; font-size: 24px; font-weight: 600; }
+    </style>
+  </defs>
+
+  <rect width="720" height="1280" fill="url(#paper)"/>
+  <rect x="0" y="0" width="720" height="1280" fill="none"/>
+
+  <!-- mini program top bar -->
+  <rect x="0" y="0" width="720" height="76" fill="#fffaf2"/>
+  <text x="360" y="48" text-anchor="middle" class="sans ink" font-size="28" font-weight="700">向东渠事迹数字馆</text>
+  <rect x="604" y="22" width="78" height="36" rx="18" fill="#ffffff" stroke="#ded2c4"/>
+  <circle cx="634" cy="40" r="3" fill="#3d241b"/><circle cx="644" cy="40" r="3" fill="#3d241b"/><circle cx="654" cy="40" r="3" fill="#3d241b"/>
+  <circle cx="674" cy="40" r="10" fill="none" stroke="#3d241b" stroke-width="2"/>
+
+  <!-- hero -->
+  <rect x="0" y="76" width="720" height="300" fill="url(#hero)"/>
+  <path d="M410 152 C485 110 590 110 706 152" fill="none" stroke="#6d4b36" stroke-width="16" opacity="0.55"/>
+  <path d="M430 196 C510 160 604 160 720 200" fill="none" stroke="#4d3528" stroke-width="12" opacity="0.36"/>
+  <path d="M460 235 C540 210 630 215 720 250" fill="none" stroke="#4d3528" stroke-width="10" opacity="0.28"/>
+  <rect x="606" y="142" width="50" height="116" rx="4" fill="#6b523e" opacity="0.62"/>
+  <text x="631" y="178" writing-mode="tb" text-anchor="middle" class="song" fill="#a61717" font-size="24" font-weight="800">向东渠</text>
+
+  <text x="58" y="168" class="song title" font-size="72">向东渠</text>
+  <text x="62" y="224" class="song ink" font-size="38" font-weight="700" letter-spacing="8">事迹数字馆</text>
+  <text x="64" y="268" class="sans ink" font-size="19">★ 中共云霄县委党史和地方志研究室</text>
+  <text x="64" y="300" class="sans ink" font-size="19">★ 中共云霄县委党建办</text>
+  <path d="M-20 326 C120 288 214 356 340 328 C500 292 590 318 742 285 L742 376 L-20 376 Z" fill="url(#redRibbon)" opacity="0.96"/>
+  <path d="M0 358 C170 326 276 380 430 354 C548 334 624 338 720 318 L720 376 L0 376 Z" fill="#f0a044" opacity="0.32"/>
+
+  <!-- quick entry panel -->
+  <rect x="28" y="344" width="664" height="206" rx="24" class="card"/>
+  <g class="sans">
+    <g transform="translate(82 378)"><circle r="32" fill="#f8e7d4" stroke="#f2d5bd"/><path d="M-18 10 L-8 -8 L8 -8 L20 10 Z" fill="none" stroke="#a73724" stroke-width="3"/><text y="72" text-anchor="middle" class="label">全景水渠</text></g>
+    <g transform="translate(238 378)"><circle r="32" fill="#f8e7d4" stroke="#f2d5bd"/><rect x="-21" y="-12" width="42" height="24" rx="8" fill="none" stroke="#a73724" stroke-width="3"/><text y="72" text-anchor="middle" class="label">展厅VR</text></g>
+    <g transform="translate(398 378)"><circle r="32" fill="#f8e7d4" stroke="#f2d5bd"/><path d="M-13 -18 H10 L18 -9 V18 H-13 Z" fill="none" stroke="#a73724" stroke-width="3"/><text y="72" text-anchor="middle" class="label">历史资料</text></g>
+    <g transform="translate(558 378)"><circle r="32" fill="#f8e7d4" stroke="#f2d5bd"/><path d="M0 -22 C18 -4 10 18 0 22 C-14 12 -12 -4 0 -22 Z" fill="none" stroke="#a73724" stroke-width="3"/><text y="72" text-anchor="middle" class="label">精神内涵</text></g>
+    <g transform="translate(170 480)"><circle r="32" fill="#f8e7d4" stroke="#f2d5bd"/><polygon points="0,-22 7,-6 23,-6 10,4 15,20 0,10 -15,20 -10,4 -23,-6 -7,-6" fill="none" stroke="#a73724" stroke-width="3"/><text y="72" text-anchor="middle" class="label">时代价值</text></g>
+    <g transform="translate(360 480)"><circle r="32" fill="#f8e7d4" stroke="#f2d5bd"/><path d="M-18 16 H18 V-4 L0 -18 L-18 -4 Z" fill="none" stroke="#a73724" stroke-width="3"/><text y="72" text-anchor="middle" class="label">今日云霄</text></g>
+    <g transform="translate(548 480)"><circle r="32" fill="#f8e7d4" stroke="#f2d5bd"/><rect x="-16" y="-18" width="32" height="36" fill="none" stroke="#a73724" stroke-width="3"/><path d="M-8 -7 H8 M-8 3 H8 M-8 13 H4" stroke="#a73724" stroke-width="3"/><text y="72" text-anchor="middle" class="label">资讯动态</text></g>
+  </g>
+
+  <!-- sections -->
+  <g transform="translate(28 580)">
+    <rect width="664" height="142" rx="18" class="cardLite"/>
+    <rect x="22" y="22" width="5" height="30" rx="3" fill="#b10e12"/>
+    <text x="40" y="48" class="song sectionTitle">全景水渠</text><text x="602" y="46" class="sans more">更多 ›</text>
+    <rect x="22" y="70" width="620" height="52" rx="10" fill="#d8c4ad"/>
+    <path d="M22 102 C170 66 300 122 450 82 C530 62 580 76 642 58 L642 122 L22 122 Z" fill="#6f9d87" opacity="0.52"/>
+  </g>
+  <g transform="translate(28 746)">
+    <rect width="664" height="154" rx="18" class="cardLite"/>
+    <rect x="22" y="22" width="5" height="30" rx="3" fill="#b10e12"/>
+    <text x="40" y="48" class="song sectionTitle">展厅VR</text><text x="602" y="46" class="sans more">更多 ›</text>
+    <rect x="22" y="70" width="620" height="64" rx="10" fill="#4a3528"/>
+    <rect x="52" y="84" width="66" height="38" rx="12" fill="none" stroke="#fff4e8" stroke-width="3"/><text x="85" y="110" text-anchor="middle" fill="#fff4e8" font-size="20" font-weight="800">VR</text>
+    <text x="442" y="100" text-anchor="middle" class="song" fill="#fff4e8" font-size="30" font-weight="700">沉浸式云展厅</text>
+    <text x="442" y="124" text-anchor="middle" fill="#f7d7b7" font-size="18">身临其境　感受奋斗历程</text>
+  </g>
+  <g transform="translate(28 924)">
+    <rect width="664" height="172" rx="18" class="cardLite"/>
+    <rect x="22" y="22" width="5" height="30" rx="3" fill="#b10e12"/>
+    <text x="40" y="48" class="song sectionTitle">历史资料</text><text x="602" y="46" class="sans more">更多 ›</text>
+    <g transform="translate(22 70)"><rect width="190" height="76" rx="10" fill="#cab49b"/><text x="95" y="110" text-anchor="middle" class="sans ink small">建设场景</text></g>
+    <g transform="translate(237 70)"><rect width="190" height="76" rx="10" fill="#ead7c2"/><text x="95" y="110" text-anchor="middle" class="sans ink small">工作笔记</text></g>
+    <g transform="translate(452 70)"><rect width="190" height="76" rx="10" fill="#bca388"/><text x="95" y="110" text-anchor="middle" class="sans ink small">工程老照片</text></g>
+  </g>
+  <g transform="translate(28 1120)">
+    <rect width="664" height="132" rx="18" class="cardLite"/>
+    <rect x="22" y="22" width="5" height="30" rx="3" fill="#b10e12"/>
+    <text x="40" y="48" class="song sectionTitle">精神内涵</text><text x="602" y="46" class="sans more">更多 ›</text>
+    <rect x="22" y="70" width="290" height="42" rx="8" fill="#d8c4ad"/>
+    <text x="450" y="90" text-anchor="middle" class="song red" font-size="26" font-weight="800">艰苦奋斗　无私奉献</text>
+    <text x="450" y="120" text-anchor="middle" class="song red" font-size="26" font-weight="800">团结协作　开拓创新</text>
+  </g>
+</svg>
