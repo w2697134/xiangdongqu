@@ -1,2 +1,6 @@
 project.private.config.json
 xiangdongqu-digital-museum-miniprogram/
+web/node_modules/
+web/dist/
+web/*.log
+web/*.tsbuildinfo
