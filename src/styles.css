@@ -1615,14 +1615,15 @@ button {
       #f7ead0;
     box-shadow:
       0 12px 28px rgba(86, 55, 30, 0.16),
-      inset 0 0 0 3px rgba(255, 255, 255, 0.48);
+      inset 0 0 0 3px rgba(255, 255, 255, 0.52),
+      inset 0 0 0 6px rgba(181, 130, 73, 0.12);
     padding: 14px 14px 12px;
     scroll-padding-inline: 14px;
     scroll-snap-type: x mandatory;
   }
 
   .quick-nav-item {
-    flex: 0 0 74px;
+    flex: 0 0 clamp(63px, 19.7vw, 84px);
     min-height: 74px;
     gap: 6px;
     letter-spacing: 0;
@@ -1656,22 +1657,7 @@ button {
 
   .quick-nav::before,
   .quick-nav::after {
-    display: block;
-  }
-
-  .quick-nav::before {
-    inset: 6px;
-    border-color: rgba(181, 130, 73, 0.38);
-    border-radius: 14px;
-  }
-
-  .quick-nav::after {
-    opacity: 0.36;
-    background:
-      linear-gradient(135deg, transparent 12px, rgba(170, 43, 49, 0.3) 12px 14px, transparent 14px) left 9px top 9px / 24px 24px no-repeat,
-      linear-gradient(225deg, transparent 12px, rgba(170, 43, 49, 0.3) 12px 14px, transparent 14px) right 9px top 9px / 24px 24px no-repeat,
-      linear-gradient(45deg, transparent 12px, rgba(170, 43, 49, 0.22) 12px 14px, transparent 14px) left 9px bottom 9px / 24px 24px no-repeat,
-      linear-gradient(315deg, transparent 12px, rgba(170, 43, 49, 0.22) 12px 14px, transparent 14px) right 9px bottom 9px / 24px 24px no-repeat;
+    display: none;
   }
 
   .quick-nav-item::before,
