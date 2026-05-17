@@ -17,8 +17,11 @@
         wx:for="{{navItems}}"
         wx:key="id"
         class="quick-nav-item"
-        data-label="{{item.label}}"
-        bindtap="showGuide"
+        data-type="guide"
+        data-id="{{item.id}}"
+        data-title="{{item.label}}"
+        data-kind="mixed"
+        bindtap="openPlaceholder"
       >
         <view class="quick-nav-icon">
           <image src="{{item.icon}}" mode="aspectFit" />
@@ -28,7 +31,16 @@
     </scroll-view>
 
     <scroll-view class="feature-strip" scroll-x="true" enable-flex="true">
-      <view wx:for="{{featureCards}}" wx:key="id" class="feature-card">
+      <view
+        wx:for="{{featureCards}}"
+        wx:key="id"
+        class="feature-card"
+        data-type="feature"
+        data-id="{{item.id}}"
+        data-title="{{item.title}}"
+        data-kind="mixed"
+        bindtap="openPlaceholder"
+      >
         <image class="card-image" src="{{item.image}}" mode="aspectFill" />
         <view class="feature-copy">
           <view>
@@ -43,9 +55,22 @@
     <view class="section">
       <view class="section-head">
         <text class="section-title">向东渠风采</text>
-        <text class="section-link">全部 ›</text>
+        <text
+          class="section-link"
+          data-type="video"
+          data-id="all"
+          data-title="向东渠风采"
+          data-kind="video"
+          bindtap="openPlaceholder"
+        >全部 ›</text>
       </view>
-      <view class="video-stage" data-title="{{selectedVideo.title}}" bindtap="openVideo">
+      <view
+        class="video-stage"
+        data-type="video"
+        data-id="{{selectedVideo.id}}"
+        data-title="{{selectedVideo.title}}"
+        bindtap="openVideo"
+      >
         <image class="video-cover" src="{{selectedVideo.image}}" mode="aspectFill" />
         <view class="play-button">▶</view>
         <view class="video-title-bar">
@@ -59,7 +84,9 @@
           wx:key="id"
           class="video-row {{selectedVideo.id == item.id ? 'active' : ''}}"
           data-id="{{item.id}}"
-          bindtap="selectVideo"
+          data-title="{{item.title}}"
+          data-type="video"
+          bindtap="openVideo"
         >
           <view class="video-row-icon">▶</view>
           <view class="video-row-copy">
@@ -76,13 +103,22 @@
           <text class="section-title">央视纪录片《国家记忆》</text>
           <text class="section-subtitle">一渠清水向东流</text>
         </view>
-        <text class="section-link">全部 ›</text>
+        <text
+          class="section-link"
+          data-type="documentary"
+          data-id="all"
+          data-title="央视纪录片《国家记忆》"
+          data-kind="video"
+          bindtap="openPlaceholder"
+        >全部 ›</text>
       </view>
       <scroll-view class="doc-strip" scroll-x="true" enable-flex="true">
         <view
           wx:for="{{documentary}}"
           wx:key="id"
           class="doc-card"
+          data-type="documentary"
+          data-id="{{item.id}}"
           data-title="{{item.title}}"
           bindtap="openVideo"
         >
@@ -98,15 +134,25 @@
     <view class="gallery-panel">
       <view class="gallery-head">
         <text class="gallery-title">图文影像</text>
-        <text class="gallery-link">查看全部 ›</text>
+        <text
+          class="gallery-link"
+          data-type="gallery"
+          data-id="all"
+          data-title="图文影像"
+          data-kind="mixed"
+          bindtap="openPlaceholder"
+        >查看全部 ›</text>
       </view>
       <scroll-view class="gallery-feed" scroll-x="true" enable-flex="true">
         <view
           wx:for="{{gallery}}"
           wx:key="id"
           class="gallery-card"
-          data-src="{{item.image}}"
-          bindtap="previewImage"
+          data-type="gallery"
+          data-id="{{item.id}}"
+          data-title="{{item.title}}"
+          data-kind="{{item.kind}}"
+          bindtap="openPlaceholder"
         >
           <image class="gallery-image" src="{{item.image}}" mode="aspectFill" />
           <view class="gallery-copy">
@@ -129,14 +175,24 @@
         wx:for="{{navItems}}"
         wx:key="id"
         class="guide-item {{selectedGuide == item.label ? 'active' : ''}}"
-        data-label="{{item.label}}"
-        bindtap="showGuide"
+        data-type="guide"
+        data-id="{{item.id}}"
+        data-title="{{item.label}}"
+        data-kind="mixed"
+        bindtap="openPlaceholder"
       >
         <image src="{{item.icon}}" mode="aspectFit" />
         <text>{{item.label}}</text>
       </view>
     </view>
-    <view class="guide-card">
+    <view
+      class="guide-card"
+      data-type="guide"
+      data-id="selected"
+      data-title="{{selectedGuide}}"
+      data-kind="mixed"
+      bindtap="openPlaceholder"
+    >
       <text class="guide-title">{{selectedGuide}}</text>
       <text class="guide-text">围绕向东渠建设历史、工程节点、展馆陈列和今日云霄进行移动端导览展示。</text>
       <text class="text-link">进入栏目 ›</text>
@@ -149,7 +205,16 @@
       <text class="simple-subtitle">展馆内容、活动记录与素材更新</text>
     </view>
     <view class="news-list">
-      <view wx:for="{{gallery}}" wx:key="id" class="news-card">
+      <view
+        wx:for="{{gallery}}"
+        wx:key="id"
+        class="news-card"
+        data-type="news"
+        data-id="{{item.id}}"
+        data-title="{{item.title}}"
+        data-kind="{{item.kind}}"
+        bindtap="openPlaceholder"
+      >
         <image src="{{item.image}}" mode="aspectFill" />
         <view>
           <text class="news-title">{{item.title}}</text>

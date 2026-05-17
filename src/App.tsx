@@ -1,4 +1,4 @@
-import { type ReactNode, useEffect, useMemo, useRef, useState } from "react";
+import { type ReactNode, useEffect, useRef, useState } from "react";
 import { Bot, ChevronRight, Compass, Home, Images, Play, Send, X } from "lucide-react";
 import { sendConsultMessage, type ConsultMessage } from "./api/consult";
 import { fetchHomePageData } from "./api/home";
@@ -6,6 +6,19 @@ import type { FeatureCard, GalleryItem, HomePageData, NavItem, VideoItem } from 
 
 type TopNavKey = "home" | "guide" | "news" | "ai";
 type MobileTabIconType = "recommend" | "guide" | "news" | "ai";
+type PlaceholderKind = "guide" | "feature" | "video" | "documentary" | "gallery" | "news";
+
+type PlaceholderPageData = {
+  kind: PlaceholderKind;
+  eyebrow: string;
+  title: string;
+  status: string;
+  description: string;
+  backHref: string;
+  backLabel: string;
+  browseHref: string;
+  browseLabel: string;
+};
 
 const iconMap = {
   panorama: "/assets/nav-icons/panorama-canal.png",
@@ -35,10 +48,141 @@ function getTopNavActiveItem() {
   return "home";
 }
 
+function normalizePath(pathname: string) {
+  const cleanPath = pathname.replace(/\/+$/, "");
+  return cleanPath || "/";
+}
+
+function getPlaceholderCopy(kind: PlaceholderKind) {
+  const copy: Record<PlaceholderKind, Pick<PlaceholderPageData, "eyebrow" | "status" | "description">> = {
+    guide: {
+      eyebrow: "展馆导览",
+      status: "展陈内容整理中",
+      description: "这一栏目将承接水渠实景、VR 展厅、历史节点和参观动线，后续接入正式图片、视频与导览说明。",
+    },
+    feature: {
+      eyebrow: "数字馆入口",
+      status: "专题内容整理中",
+      description: "专题页框架已预留，后续可放置简介、导览图、展陈图文和相关视频资料。",
+    },
+    video: {
+      eyebrow: "影像资料",
+      status: "影像资料归档中",
+      description: "视频封面、播放源、解说文字和相关资料正在预留位置，接入后可直接替换当前展陈卡片。",
+    },
+    documentary: {
+      eyebrow: "纪录片资料",
+      status: "纪录片资料整理中",
+      description: "这里将用于承载《国家记忆》相关片源、分集说明和背景资料，保持数字馆统一展陈风格。",
+    },
+    gallery: {
+      eyebrow: "图文影像",
+      status: "图文资料待归档",
+      description: "图片、档案、口述记忆和活动影像将集中整理到这里，当前先保留统一的内容框架。",
+    },
+    news: {
+      eyebrow: "资讯动态",
+      status: "动态内容整理中",
+      description: "这里将承载展馆更新、活动记录和资料上新信息，后续可接入正式列表或后台数据。",
+    },
+  };
+
+  return copy[kind];
+}
+
+function createPlaceholderPage(kind: PlaceholderKind, title: string, options?: Partial<PlaceholderPageData>): PlaceholderPageData {
+  const copy = getPlaceholderCopy(kind);
+  const sectionHrefByKind: Record<PlaceholderKind, string> = {
+    guide: "/guide",
+    feature: "/guide",
+    video: "/videos",
+    documentary: "/documentary",
+    gallery: "/gallery",
+    news: "/news",
+  };
+
+  return {
+    kind,
+    title,
+    eyebrow: copy.eyebrow,
+    status: copy.status,
+    description: copy.description,
+    backHref: "/",
+    backLabel: "返回首页",
+    browseHref: sectionHrefByKind[kind],
+    browseLabel: "继续浏览栏目",
+    ...options,
+  };
+}
+
+function getRoutePage(pathname: string, data: HomePageData): PlaceholderPageData | null {
+  const path = normalizePath(pathname);
+  const allVideos = [...data.videos, ...data.documentary];
+
+  if (path === "/") {
+    return null;
+  }
+
+  const videoMatch = path.match(/^\/videos\/([^/]+)$/);
+  if (videoMatch) {
+    const video = data.videos.find((item) => item.id === videoMatch[1]) ?? allVideos.find((item) => item.id === videoMatch[1]);
+    return createPlaceholderPage("video", video?.title ?? "向东渠风采", {
+      browseHref: "/videos",
+    });
+  }
+
+  const documentaryMatch = path.match(/^\/documentary\/([^/]+)$/);
+  if (documentaryMatch) {
+    const item = data.documentary.find((doc) => doc.id === `d${documentaryMatch[1]}` || doc.id === documentaryMatch[1]);
+    return createPlaceholderPage("documentary", item?.title ?? "央视纪录片《国家记忆》", {
+      browseHref: "/documentary",
+    });
+  }
+
+  const galleryMatch = path.match(/^\/gallery\/([^/]+)$/);
+  if (galleryMatch) {
+    const item = data.gallery.find((galleryItem) => galleryItem.id === galleryMatch[1]);
+    return createPlaceholderPage("gallery", item?.title ?? "图文影像", {
+      browseHref: "/gallery",
+    });
+  }
+
+  if (path === "/videos") {
+    return createPlaceholderPage("video", "向东渠风采");
+  }
+
+  if (path === "/documentary") {
+    return createPlaceholderPage("documentary", "央视纪录片《国家记忆》");
+  }
+
+  if (path === "/gallery") {
+    return createPlaceholderPage("gallery", "印象向东渠");
+  }
+
+  if (path === "/news") {
+    return createPlaceholderPage("news", "资讯动态");
+  }
+
+  if (path === "/guide") {
+    return createPlaceholderPage("guide", "向东渠导览");
+  }
+
+  const featureItem = data.featureCards.find((item) => normalizePath(item.href) === path);
+  if (featureItem) {
+    return createPlaceholderPage("feature", featureItem.title);
+  }
+
+  const navItem = data.navItems.find((item) => normalizePath(item.href) === path);
+  if (navItem) {
+    return createPlaceholderPage(navItem.id === "news" ? "news" : "guide", navItem.label);
+  }
+
+  return createPlaceholderPage("feature", "数字馆内容");
+}
+
 function App() {
   const [data, setData] = useState<HomePageData | null>(null);
   const [selectedVideo, setSelectedVideo] = useState<VideoItem | null>(null);
-  const [drawerVideo, setDrawerVideo] = useState<VideoItem | null>(null);
 
   useEffect(() => {
     let ignore = false;
@@ -55,19 +199,22 @@ function App() {
     };
   }, []);
 
-  const allVideos = useMemo(() => {
-    if (!data) {
-      return [];
-    }
-
-    return [...data.videos, ...data.documentary];
-  }, [data]);
-
   if (!data) {
     return (
       <main className="app app-loading">
         <div className="loading-mark" />
         <span>正在加载数字馆内容</span>
+      </main>
+    );
+  }
+
+  const routePage = getRoutePage(window.location.pathname, data);
+
+  if (routePage) {
+    return (
+      <main className="app">
+        <TopNav />
+        <PlaceholderRoutePage page={routePage} />
       </main>
     );
   }
@@ -82,26 +229,11 @@ function App() {
         title="向东渠风采"
         items={data.videos}
         selectedVideo={selectedVideo}
-        onSelect={setSelectedVideo}
-        onOpen={setDrawerVideo}
       />
       <DocumentarySection
         items={data.documentary}
-        onSelect={(item) => {
-          setSelectedVideo(item);
-          setDrawerVideo(item);
-        }}
       />
       <GallerySection items={data.gallery} />
-      <VideoDrawer
-        video={drawerVideo}
-        playlist={allVideos}
-        onSelect={(item) => {
-          setSelectedVideo(item);
-          setDrawerVideo(item);
-        }}
-        onClose={() => setDrawerVideo(null)}
-      />
     </main>
   );
 }
@@ -263,6 +395,39 @@ function BrandMark() {
       />
       <path className="brand-mark-peak" d="M7.5 12.4 18 6.9l10.5 5.5" pathLength="1" />
     </svg>
+  );
+}
+
+function PlaceholderRoutePage({ page }: { page: PlaceholderPageData }) {
+  return (
+    <section className={`route-placeholder route-placeholder-${page.kind}`} aria-labelledby="route-placeholder-title">
+      <div className="route-placeholder-art" aria-hidden="true">
+        <div className="paper-sheet paper-sheet-back" />
+        <div className="paper-sheet paper-sheet-front">
+          <span className="canal-line canal-line-main" />
+          <span className="canal-line canal-line-soft" />
+          <span className="archive-line archive-line-one" />
+          <span className="archive-line archive-line-two" />
+          <span className="archive-line archive-line-three" />
+          <span className="seal-mark">向东</span>
+        </div>
+      </div>
+      <div className="route-placeholder-copy">
+        <span className="route-eyebrow">{page.eyebrow}</span>
+        <h1 id="route-placeholder-title">{page.title}</h1>
+        <strong>{page.status}</strong>
+        <p>{page.description}</p>
+        <div className="route-actions">
+          <a className="route-action primary" href={page.backHref}>
+            {page.backLabel}
+          </a>
+          <a className="route-action" href={page.browseHref}>
+            {page.browseLabel}
+            <ChevronRight size={18} />
+          </a>
+        </div>
+      </div>
+    </section>
   );
 }
 
@@ -586,47 +751,43 @@ function VideoSection({
   title,
   items,
   selectedVideo,
-  onSelect,
-  onOpen,
 }: {
   title: string;
   items: VideoItem[];
   selectedVideo: VideoItem | null;
-  onSelect: (item: VideoItem) => void;
-  onOpen: (item: VideoItem) => void;
 }) {
+  const currentVideo = selectedVideo ?? items[0];
+
   return (
     <section className="section">
       <SectionHead title={title} href="/videos" />
       <div className="video-layout">
-        <button
+        <a
           className="video-stage"
-          onClick={() => selectedVideo && onOpen(selectedVideo)}
-          type="button"
+          href={currentVideo?.href ?? "/videos"}
         >
-          <MediaFrame image={selectedVideo?.image ?? items[0]?.image} tone="video" label="视频封面留白" alt="" />
+          <MediaFrame image={currentVideo?.image} tone="video" label="视频封面留白" alt="" />
           <span className="play-button">
             <Play size={30} fill="currentColor" />
           </span>
           <div className="video-stage-title">
-            <strong>{selectedVideo?.title ?? items[0]?.title}</strong>
-            <span>{selectedVideo?.duration ?? items[0]?.duration}</span>
+            <strong>{currentVideo?.title}</strong>
+            <span>{currentVideo?.duration}</span>
           </div>
-        </button>
+        </a>
         <div className="video-list" aria-label="视频列表">
           {items.map((item) => (
-            <button
+            <a
               className={item.id === selectedVideo?.id ? "video-row active" : "video-row"}
+              href={item.href}
               key={item.id}
-              onClick={() => onSelect(item)}
-              type="button"
             >
               <span className="video-row-thumb">
                 <Play size={16} fill="currentColor" />
               </span>
               <span>{item.title}</span>
               <em>{item.duration}</em>
-            </button>
+            </a>
           ))}
         </div>
       </div>
@@ -636,23 +797,21 @@ function VideoSection({
 
 function DocumentarySection({
   items,
-  onSelect,
 }: {
   items: VideoItem[];
-  onSelect: (item: VideoItem) => void;
 }) {
   return (
     <section className="section">
       <SectionHead title="央视纪录片《国家记忆》" subtitle="一渠清水向东流" href="/documentary" />
       <div className="documentary-grid">
         {items.map((item) => (
-          <button className="documentary-card" key={item.id} onClick={() => onSelect(item)} type="button">
+          <a className="documentary-card" href={item.href} key={item.id}>
             <MediaFrame image={item.image} tone="documentary" label="纪录片封面留白" alt="" />
             <span className="play-button compact">
               <Play size={24} fill="currentColor" />
             </span>
             <strong>{item.title}</strong>
-          </button>
+          </a>
         ))}
       </div>
     </section>
@@ -675,7 +834,7 @@ function GallerySection({ items }: { items: GalleryItem[] }) {
         <div className="gallery-panel-body">
           <div className="gallery-feed" aria-label="印象向东渠内容列表">
             {items.map((item, index) => (
-              <article className="gallery-feed-card" key={item.id}>
+              <a className="gallery-feed-card" href={`/gallery/${item.id}`} key={item.id}>
                 <div className="gallery-media">
                   <MediaFrame
                     image={item.image}
@@ -697,7 +856,7 @@ function GallerySection({ items }: { items: GalleryItem[] }) {
                   <p>{item.summary}</p>
                   <em>{item.date}</em>
                 </div>
-              </article>
+              </a>
             ))}
           </div>
         </div>
@@ -749,52 +908,6 @@ function MediaFrame({
     <div className={`placeholder placeholder-${tone} has-image`}>
       <img src={image} alt={alt} loading="lazy" />
     </div>
-  );
-}
-
-function VideoDrawer({
-  video,
-  playlist,
-  onSelect,
-  onClose,
-}: {
-  video: VideoItem | null;
-  playlist: VideoItem[];
-  onSelect: (item: VideoItem) => void;
-  onClose: () => void;
-}) {
-  if (!video) {
-    return null;
-  }
-
-  return (
-    <aside className="video-drawer" aria-label="当前视频">
-      <button className="drawer-close" onClick={onClose} type="button">
-        收起
-      </button>
-      <div className="drawer-cover">
-        <MediaFrame image={video.image} tone="drawer" label="播放器留白" alt="" />
-        <span className="play-button">
-          <Play size={30} fill="currentColor" />
-        </span>
-      </div>
-      <div className="drawer-copy">
-        <h3>{video.title}</h3>
-        <p>这里预留真实播放器接口，接入视频地址后可替换当前留白区域。</p>
-      </div>
-      <div className="drawer-playlist">
-        {playlist.slice(0, 4).map((item) => (
-          <button
-            className={item.id === video.id ? "active" : ""}
-            key={item.id}
-            onClick={() => onSelect(item)}
-            type="button"
-          >
-            {item.title}
-          </button>
-        ))}
-      </div>
-    </aside>
   );
 }
 

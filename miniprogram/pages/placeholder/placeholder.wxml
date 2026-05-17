@@ -1,0 +1,34 @@
+<view class="placeholder-page">
+  <view class="placeholder-hero">
+    <view class="placeholder-copy">
+      <text class="placeholder-eyebrow">{{eyebrow}}</text>
+      <text class="placeholder-title">{{title}}</text>
+      <text class="placeholder-status">{{status}}</text>
+      <text class="placeholder-description">{{description}}</text>
+    </view>
+
+    <view class="placeholder-art" aria-hidden="true">
+      <view class="paper paper-back"></view>
+      <view class="paper paper-front">
+        <view class="paper-line line-one"></view>
+        <view class="paper-line line-two"></view>
+        <view class="canal canal-main"></view>
+        <view class="canal canal-soft"></view>
+        <view class="seal">向东</view>
+      </view>
+    </view>
+  </view>
+
+  <view class="status-card">
+    <view class="status-icon">{{label}}</view>
+    <view class="status-copy">
+      <text>当前页面框架已预留</text>
+      <text>后续补充正式素材后，可直接替换这里的展陈区域。</text>
+    </view>
+  </view>
+
+  <view class="placeholder-actions">
+    <button class="action primary" bindtap="goBack">返回上一页</button>
+    <button class="action" bindtap="goHome">返回首页</button>
+  </view>
+</view>

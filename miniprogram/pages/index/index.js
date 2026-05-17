@@ -64,6 +64,10 @@ function createMessage(role, content) {
   };
 }
 
+function createPlaceholderUrl({ type = "feature", id = "", title = "向东渠内容", kind = "mixed" }) {
+  return `/pages/placeholder/placeholder?type=${encodeURIComponent(type)}&id=${encodeURIComponent(id)}&title=${encodeURIComponent(title)}&kind=${encodeURIComponent(kind)}`;
+}
+
 Page({
   data: {
     assets: museumData.assets,
@@ -99,6 +103,18 @@ Page({
       return;
     }
 
+    if (tab === "guide" || tab === "news") {
+      wx.navigateTo({
+        url: createPlaceholderUrl({
+          type: tab,
+          id: tab,
+          title: tab === "guide" ? "向东渠导览" : "资讯动态",
+          kind: "mixed"
+        })
+      });
+      return;
+    }
+
     this.setData({
       activeTab: tab,
       consultOpen: false
@@ -113,6 +129,18 @@ Page({
     });
   },
 
+  openPlaceholder(event) {
+    const dataset = event.currentTarget.dataset;
+    wx.navigateTo({
+      url: createPlaceholderUrl({
+        type: dataset.type,
+        id: dataset.id,
+        title: dataset.title || dataset.label,
+        kind: dataset.kind
+      })
+    });
+  },
+
   selectVideo(event) {
     const id = event.currentTarget.dataset.id;
     const selectedVideo = museumData.videos.find((item) => item.id === id) || museumData.videos[0];
@@ -120,10 +148,14 @@ Page({
   },
 
   openVideo(event) {
-    const title = event.currentTarget.dataset.title || "视频内容";
-    wx.showToast({
-      title: `${title} 待接入`,
-      icon: "none"
+    const dataset = event.currentTarget.dataset;
+    wx.navigateTo({
+      url: createPlaceholderUrl({
+        type: dataset.type || "video",
+        id: dataset.id,
+        title: dataset.title || "视频内容",
+        kind: "video"
+      })
     });
   },
 
