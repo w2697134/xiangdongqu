@@ -852,8 +852,7 @@ button {
   z-index: 1;
 }
 
-.placeholder svg,
-.gallery-note > svg {
+.placeholder svg {
   width: clamp(38px, 2.7vw, 72px);
   height: auto;
   z-index: 1;
@@ -1091,36 +1090,8 @@ button {
 
 .gallery-panel-body {
   display: grid;
-  grid-template-columns: minmax(clamp(260px, 18vw, 360px), 0.24fr) minmax(0, 1fr);
-  gap: clamp(18px, 1.6vw, 32px);
+  grid-template-columns: 1fr;
   padding: clamp(22px, 1.8vw, 34px) clamp(24px, 2.2vw, 42px) clamp(24px, 2.2vw, 42px);
-}
-
-.gallery-note {
-  align-self: stretch;
-  display: grid;
-  align-content: start;
-  gap: clamp(12px, 0.9vw, 18px);
-  min-height: clamp(360px, 27vw, 560px);
-  border: 1px solid rgba(170, 43, 49, 0.16);
-  border-radius: 8px;
-  background:
-    linear-gradient(180deg, rgba(170, 43, 49, 0.08), rgba(201, 163, 99, 0.1)),
-    rgba(255, 250, 241, 0.78);
-  color: var(--red);
-  padding: clamp(22px, 1.8vw, 34px);
-}
-
-.gallery-note strong {
-  color: var(--text);
-  font-size: var(--fs-card-title);
-}
-
-.gallery-note span {
-  color: var(--muted);
-  font-family: "Microsoft YaHei", system-ui, sans-serif;
-  font-size: var(--fs-sm);
-  line-height: 1.8;
 }
 
 .gallery-feed {
@@ -1407,16 +1378,8 @@ button {
     grid-template-columns: 1fr;
   }
 
-  .gallery-note {
-    min-height: auto;
-  }
-
   .gallery-feed-card {
     grid-template-columns: minmax(220px, 0.42fr) minmax(0, 1fr);
-  }
-
-  .gallery-note {
-    min-height: 0;
   }
 }
 
@@ -1846,10 +1809,6 @@ button {
 
   .gallery-panel-body {
     padding: 18px;
-  }
-
-  .gallery-note {
-    display: none;
   }
 
   .gallery-feed {

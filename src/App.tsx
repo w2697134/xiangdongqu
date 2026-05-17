@@ -666,7 +666,6 @@ function GallerySection({ items }: { items: GalleryItem[] }) {
         <div className="gallery-panel-head">
           <div>
             <h2>印象向东渠</h2>
-            <p>图片、视频和档案素材集中上传，内容区可上下滑动浏览。</p>
           </div>
           <a href="/gallery">
             更多
@@ -674,11 +673,6 @@ function GallerySection({ items }: { items: GalleryItem[] }) {
           </a>
         </div>
         <div className="gallery-panel-body">
-          <aside className="gallery-note">
-            <Images size={34} strokeWidth={1.5} />
-            <strong>素材总览</strong>
-            <span>支持图片、视频、档案封面等多类型内容，后续接入上传接口后直接填充到右侧列表。</span>
-          </aside>
           <div className="gallery-feed" aria-label="印象向东渠内容列表">
             {items.map((item, index) => (
               <article className="gallery-feed-card" key={item.id}>
