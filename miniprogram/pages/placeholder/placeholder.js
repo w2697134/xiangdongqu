@@ -137,7 +137,7 @@ Page({
     consultOpen: false,
     consultInput: "",
     consultMessages: [
-      createMessage("assistant", "您好，我可以帮您查询向东渠历史、展馆导览、视频资料和参观路线。")
+      createMessage("assistant", museumData.consultWelcome)
     ],
     isConsulting: false,
     panelX: 0,

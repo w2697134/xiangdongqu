@@ -1,9 +1,5 @@
 import type { Config } from "@netlify/functions";
-
-type ChatMessage = {
-  role?: string;
-  content?: string;
-};
+import { buildConsultMessages, hasUserConsultMessage, type RawConsultMessage } from "./consult-agent";
 
 function jsonResponse(payload: unknown, status = 200) {
   return new Response(JSON.stringify(payload), {
@@ -28,18 +24,13 @@ export default async (req: Request) => {
   }
 
   try {
-    const payload = (await req.json()) as { messages?: ChatMessage[] };
-    const messages = (payload.messages ?? [])
-      .filter((message) => message.role === "user" || message.role === "assistant")
-      .map((message) => ({
-        role: message.role,
-        content: String(message.content ?? "").trim(),
-      }))
-      .filter((message) => message.content);
+    const payload = (await req.json()) as { messages?: RawConsultMessage[] };
 
-    if (!messages.length) {
+    if (!hasUserConsultMessage(payload.messages)) {
       return jsonResponse({ error: "请输入咨询内容。" }, 400);
     }
+
+    const messages = buildConsultMessages(payload.messages);
 
     const apiResponse = await fetch(`${baseUrl}/chat/completions`, {
       method: "POST",
@@ -50,6 +41,8 @@ export default async (req: Request) => {
       body: JSON.stringify({
         model,
         messages,
+        temperature: 0.25,
+        max_tokens: 720,
         stream: false,
       }),
     });

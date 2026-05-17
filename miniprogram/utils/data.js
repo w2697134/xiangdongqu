@@ -1,4 +1,6 @@
 const ASSETS = "/assets";
+const consultWelcome =
+  "您好，我是向东渠数字馆讲解助手。可以问我工程概况、通水时间、向东渠精神，也可以让我帮您找到视频、纪录片和图文影像入口。";
 
 const navItems = [
   { id: "panorama", label: "全景水渠", icon: `${ASSETS}/nav-icons/panorama-canal.png` },
@@ -123,5 +125,6 @@ module.exports = {
   documentary,
   gallery,
   tabs,
+  consultWelcome,
   consultApiUrl: "https://xiangdongqu-digital-museum.netlify.app/api/ai-consult"
 };

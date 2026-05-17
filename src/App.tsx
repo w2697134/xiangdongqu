@@ -28,6 +28,9 @@ const iconMap = {
   news: "/assets/nav-icons/news-scroll.png",
 };
 
+const consultWelcome = "您好，我是向东渠数字馆讲解助手。可以问我工程概况、通水时间、向东渠精神，也可以让我帮您找到视频、纪录片和图文影像入口。";
+const consultPrompts = ["向东渠工程概况", "向东渠精神是什么？", "数字馆有哪些入口？", "纪录片在哪里看？"];
+
 function isPathSegment(path: string, segment: string) {
   return path === segment || path.startsWith(`${segment}/`);
 }
@@ -575,7 +578,7 @@ function AiConsultWindow({ open, onClose }: { open: boolean; onClose: () => void
   const [messages, setMessages] = useState<ConsultMessage[]>([
     {
       role: "assistant",
-      content: "您好，我可以帮您查询向东渠历史、展馆导览、视频资料和参观路线。",
+      content: consultWelcome,
     },
   ]);
   const [isConsulting, setIsConsulting] = useState(false);
@@ -692,7 +695,7 @@ function AiConsultWindow({ open, onClose }: { open: boolean; onClose: () => void
         ))}
         {isConsulting ? <p className="ai-message assistant muted">正在查询...</p> : null}
         <div className="ai-consult-prompts" aria-label="快捷问题">
-          {["向东渠什么时候通水？", "展厅 VR 在哪里？"].map((question) => (
+          {consultPrompts.map((question) => (
             <button disabled={isConsulting} key={question} onClick={() => submitQuestion(question)} type="button">
               {question}
             </button>

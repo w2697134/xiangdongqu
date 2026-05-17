@@ -1,5 +1,6 @@
 import react from "@vitejs/plugin-react";
 import { defineConfig, loadEnv, type Plugin } from "vite";
+import { buildConsultMessages, hasUserConsultMessage, type RawConsultMessage } from "./netlify/functions/consult-agent";
 
 function readJsonBody(req: import("node:http").IncomingMessage) {
   return new Promise<unknown>((resolve, reject) => {
@@ -52,21 +53,16 @@ function aiConsultPlugin(mode: string): Plugin {
 
         try {
           const payload = (await readJsonBody(req)) as {
-            messages?: Array<{ role?: string; content?: string }>;
+            messages?: RawConsultMessage[];
           };
-          const messages = (payload.messages ?? [])
-            .filter((message) => message.role === "user" || message.role === "assistant")
-            .map((message) => ({
-              role: message.role,
-              content: String(message.content ?? "").trim(),
-            }))
-            .filter((message) => message.content);
 
-          if (!messages.length) {
+          if (!hasUserConsultMessage(payload.messages)) {
             res.statusCode = 400;
             res.end(JSON.stringify({ error: "请输入咨询内容。" }));
             return;
           }
+
+          const messages = buildConsultMessages(payload.messages);
 
           const apiResponse = await fetch(`${baseUrl}/chat/completions`, {
             method: "POST",
@@ -77,6 +73,8 @@ function aiConsultPlugin(mode: string): Plugin {
             body: JSON.stringify({
               model,
               messages,
+              temperature: 0.25,
+              max_tokens: 720,
               stream: false,
             }),
           });
