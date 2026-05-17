@@ -16,8 +16,6 @@ type PlaceholderPageData = {
   description: string;
   backHref: string;
   backLabel: string;
-  browseHref: string;
-  browseLabel: string;
 };
 
 const iconMap = {
@@ -92,14 +90,6 @@ function getPlaceholderCopy(kind: PlaceholderKind) {
 
 function createPlaceholderPage(kind: PlaceholderKind, title: string, options?: Partial<PlaceholderPageData>): PlaceholderPageData {
   const copy = getPlaceholderCopy(kind);
-  const sectionHrefByKind: Record<PlaceholderKind, string> = {
-    guide: "/guide",
-    feature: "/guide",
-    video: "/videos",
-    documentary: "/documentary",
-    gallery: "/gallery",
-    news: "/news",
-  };
 
   return {
     kind,
@@ -109,8 +99,6 @@ function createPlaceholderPage(kind: PlaceholderKind, title: string, options?: P
     description: copy.description,
     backHref: "/",
     backLabel: "返回首页",
-    browseHref: sectionHrefByKind[kind],
-    browseLabel: "继续浏览栏目",
     ...options,
   };
 }
@@ -126,25 +114,19 @@ function getRoutePage(pathname: string, data: HomePageData): PlaceholderPageData
   const videoMatch = path.match(/^\/videos\/([^/]+)$/);
   if (videoMatch) {
     const video = data.videos.find((item) => item.id === videoMatch[1]) ?? allVideos.find((item) => item.id === videoMatch[1]);
-    return createPlaceholderPage("video", video?.title ?? "向东渠风采", {
-      browseHref: "/videos",
-    });
+    return createPlaceholderPage("video", video?.title ?? "向东渠风采");
   }
 
   const documentaryMatch = path.match(/^\/documentary\/([^/]+)$/);
   if (documentaryMatch) {
     const item = data.documentary.find((doc) => doc.id === `d${documentaryMatch[1]}` || doc.id === documentaryMatch[1]);
-    return createPlaceholderPage("documentary", item?.title ?? "央视纪录片《国家记忆》", {
-      browseHref: "/documentary",
-    });
+    return createPlaceholderPage("documentary", item?.title ?? "央视纪录片《国家记忆》");
   }
 
   const galleryMatch = path.match(/^\/gallery\/([^/]+)$/);
   if (galleryMatch) {
     const item = data.gallery.find((galleryItem) => galleryItem.id === galleryMatch[1]);
-    return createPlaceholderPage("gallery", item?.title ?? "图文影像", {
-      browseHref: "/gallery",
-    });
+    return createPlaceholderPage("gallery", item?.title ?? "图文影像");
   }
 
   if (path === "/videos") {
@@ -420,10 +402,6 @@ function PlaceholderRoutePage({ page }: { page: PlaceholderPageData }) {
         <div className="route-actions">
           <a className="route-action primary" href={page.backHref}>
             {page.backLabel}
-          </a>
-          <a className="route-action" href={page.browseHref}>
-            {page.browseLabel}
-            <ChevronRight size={18} />
           </a>
         </div>
       </div>

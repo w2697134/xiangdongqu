@@ -28,7 +28,66 @@
   </view>
 
   <view class="placeholder-actions">
-    <button class="action primary" bindtap="goBack">返回上一页</button>
-    <button class="action" bindtap="goHome">返回首页</button>
+    <button class="action primary" bindtap="goHome">返回首页</button>
+  </view>
+
+  <view
+    wx:if="{{consultOpen}}"
+    class="consult-panel"
+    style="transform: translate({{panelX}}px, {{panelY}}px);"
+  >
+    <view
+      class="consult-head"
+      bindtouchstart="onPanelTouchStart"
+      bindtouchmove="onPanelTouchMove"
+      bindtouchend="onPanelTouchEnd"
+      bindtouchcancel="onPanelTouchEnd"
+    >
+      <image class="consult-icon" src="/assets/tab/bot.svg" mode="aspectFit" />
+      <view class="consult-title">
+        <text>智能咨询</text>
+        <text>向东渠数字馆 AI 问答</text>
+      </view>
+      <button class="consult-close" bindtap="closeConsult">×</button>
+    </view>
+    <scroll-view class="consult-body" scroll-y="true">
+      <view
+        wx:for="{{consultMessages}}"
+        wx:key="index"
+        class="message {{item.role == 'assistant' ? 'assistant' : 'user'}}"
+      >
+        <rich-text nodes="{{item.html}}" />
+      </view>
+      <view wx:if="{{isConsulting}}" class="message assistant muted">正在查询...</view>
+    </scroll-view>
+    <view class="consult-input">
+      <input
+        value="{{consultInput}}"
+        placeholder="输入想了解的内容"
+        confirm-type="send"
+        disabled="{{isConsulting}}"
+        bindinput="onConsultInput"
+        bindconfirm="submitConsult"
+      />
+      <button disabled="{{isConsulting}}" bindtap="submitConsult">发送</button>
+    </view>
+  </view>
+
+  <view class="bottom-nav">
+    <button
+      wx:for="{{tabs}}"
+      wx:key="id"
+      class="bottom-tab {{activeTab == item.id ? 'active' : ''}}"
+      data-tab="{{item.id}}"
+      bindtap="onTabTap"
+    >
+      <view class="tab-core">
+        <image class="tab-icon" src="{{item.icon}}" mode="aspectFit" />
+        <view class="tab-label">
+          <text>{{item.label}}</text>
+          <text wx:if="{{item.badge}}" class="tab-badge">{{item.badge}}</text>
+        </view>
+      </view>
+    </button>
   </view>
 </view>

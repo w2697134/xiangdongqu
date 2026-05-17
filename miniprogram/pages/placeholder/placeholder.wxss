@@ -1,6 +1,6 @@
 .placeholder-page {
   min-height: 100vh;
-  padding: 44rpx 28rpx 56rpx;
+  padding: 44rpx 28rpx calc(168rpx + env(safe-area-inset-bottom));
   box-sizing: border-box;
   background:
     radial-gradient(circle at 12% 6%, rgba(255, 251, 239, 0.96), transparent 320rpx),
@@ -210,21 +210,27 @@
 }
 
 .placeholder-actions {
-  display: grid;
-  grid-template-columns: 1fr 1fr;
-  gap: 18rpx;
+  display: flex;
   margin-top: 30rpx;
 }
 
 .action {
+  width: 100%;
   height: 82rpx;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin: 0;
   border: 1rpx solid rgba(170, 43, 49, 0.24);
   border-radius: 999rpx;
   background: rgba(255, 250, 241, 0.72);
   color: #aa2b31;
   font-size: 28rpx;
   font-weight: 900;
-  line-height: 82rpx;
+  line-height: 1;
+  padding: 0;
+  text-align: center;
+  box-sizing: border-box;
 }
 
 .action.primary {
@@ -236,4 +242,244 @@
 
 .action::after {
   border: 0;
+}
+
+.consult-panel {
+  position: fixed;
+  left: 18rpx;
+  right: 18rpx;
+  bottom: calc(136rpx + env(safe-area-inset-bottom));
+  z-index: 80;
+  overflow: hidden;
+  border: 1rpx solid rgba(138, 91, 58, 0.2);
+  border-radius: 16rpx;
+  background: rgba(255, 250, 241, 0.98);
+  box-shadow: 0 22rpx 58rpx rgba(71, 43, 25, 0.2);
+}
+
+.consult-head {
+  min-height: 92rpx;
+  display: flex;
+  align-items: center;
+  gap: 16rpx;
+  border-bottom: 1rpx solid rgba(138, 91, 58, 0.14);
+  background: linear-gradient(180deg, #fffdf4, #f6e6c9);
+  padding: 14rpx 18rpx;
+  box-sizing: border-box;
+}
+
+.consult-icon {
+  width: 52rpx;
+  height: 52rpx;
+}
+
+.consult-title {
+  flex: 1;
+}
+
+.consult-title text:first-child {
+  display: block;
+  color: #aa2b31;
+  font-size: 29rpx;
+  font-weight: 900;
+}
+
+.consult-title text:last-child {
+  display: block;
+  margin-top: 3rpx;
+  color: #846f5b;
+  font-family: "Microsoft YaHei", sans-serif;
+  font-size: 21rpx;
+  font-weight: 800;
+}
+
+.consult-close {
+  width: 54rpx;
+  height: 54rpx;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin: 0;
+  border: 0;
+  border-radius: 999rpx;
+  background: rgba(170, 43, 49, 0.08);
+  color: #aa2b31;
+  font-size: 38rpx;
+  line-height: 1;
+  padding: 0;
+}
+
+.consult-close::after,
+.bottom-tab::after {
+  border: 0;
+}
+
+.consult-body {
+  max-height: 460rpx;
+  padding: 20rpx 18rpx;
+  box-sizing: border-box;
+}
+
+.message {
+  max-width: 88%;
+  margin-bottom: 14rpx;
+  border-radius: 14rpx;
+  font-family: "Microsoft YaHei", sans-serif;
+  font-size: 25rpx;
+  line-height: 1.55;
+  padding: 14rpx 16rpx;
+  box-sizing: border-box;
+  white-space: normal;
+}
+
+.message.assistant {
+  background: #f4e5cf;
+  color: #2f2017;
+}
+
+.message.user {
+  margin-left: auto;
+  background: #aa2b31;
+  color: #fff7eb;
+}
+
+.message.muted {
+  color: #846f5b;
+}
+
+.consult-input {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) 104rpx;
+  gap: 12rpx;
+  border-top: 1rpx solid rgba(138, 91, 58, 0.14);
+  padding: 14rpx 18rpx 18rpx;
+  box-sizing: border-box;
+}
+
+.consult-input input {
+  height: 72rpx;
+  border: 1rpx solid rgba(138, 91, 58, 0.18);
+  border-radius: 8rpx;
+  background: #fffaf1;
+  color: #2f2017;
+  font-family: "Microsoft YaHei", sans-serif;
+  font-size: 25rpx;
+  padding: 0 18rpx;
+  box-sizing: border-box;
+}
+
+.consult-input button {
+  height: 72rpx;
+  margin: 0;
+  border: 0;
+  border-radius: 8rpx;
+  background: linear-gradient(180deg, #b72e34, #812127);
+  color: #fff7eb;
+  font-size: 25rpx;
+  font-weight: 850;
+  line-height: 72rpx;
+  padding: 0;
+}
+
+.bottom-nav {
+  position: fixed;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  z-index: 90;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  height: calc(128rpx + env(safe-area-inset-bottom));
+  border-top: 1rpx solid rgba(181, 130, 73, 0.36);
+  background:
+    linear-gradient(180deg, rgba(255, 249, 236, 0.98), rgba(240, 215, 178, 0.98)),
+    #f2dcbb;
+  box-shadow: 0 -14rpx 34rpx rgba(71, 43, 25, 0.14);
+  padding: 10rpx 16rpx calc(12rpx + env(safe-area-inset-bottom));
+  box-sizing: border-box;
+}
+
+.bottom-tab {
+  position: relative;
+  display: flex;
+  flex: 1 1 0;
+  width: auto;
+  min-width: 0;
+  height: 100%;
+  align-items: center;
+  justify-content: center;
+  margin: 0;
+  border: 0;
+  border-radius: 0;
+  background: transparent;
+  color: #173d31;
+  font-family: "Microsoft YaHei", sans-serif;
+  font-size: 27rpx;
+  font-weight: 950;
+  line-height: 1;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+.bottom-tab.active {
+  color: #aa2b31;
+}
+
+.tab-core {
+  position: relative;
+  width: 124rpx;
+  height: 98rpx;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 6rpx;
+  border-radius: 18rpx;
+  box-sizing: border-box;
+}
+
+.bottom-tab.active .tab-core {
+  background: rgba(255, 250, 241, 0.72);
+  box-shadow:
+    inset 0 0 0 1rpx rgba(170, 43, 49, 0.13),
+    0 5rpx 12rpx rgba(96, 50, 22, 0.08);
+}
+
+.bottom-tab.active .tab-core::before {
+  content: "";
+  position: absolute;
+  top: 7rpx;
+  width: 48rpx;
+  height: 6rpx;
+  border-radius: 999rpx;
+  background: currentColor;
+  opacity: 0.82;
+}
+
+.tab-icon {
+  width: 52rpx;
+  height: 52rpx;
+}
+
+.tab-label {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 6rpx;
+  white-space: nowrap;
+}
+
+.tab-badge {
+  min-width: 34rpx;
+  height: 23rpx;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  border: 1rpx solid rgba(170, 43, 49, 0.28);
+  border-radius: 6rpx;
+  background: rgba(170, 43, 49, 0.08);
+  color: #aa2b31;
+  font-size: 16rpx;
+  font-weight: 900;
 }
