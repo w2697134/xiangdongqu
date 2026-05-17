@@ -202,8 +202,8 @@ Page({
         const payload = response.data || {};
         const ok = response.statusCode >= 200 && response.statusCode < 300;
         const content = ok
-          ? payload.content || "接口没有返回内容。"
-          : payload.error || "智能咨询接口暂时不可用。";
+          ? payload.content || "这条咨询暂时没有形成有效回复，请换个问法再试。"
+          : payload.error || "智能讲解服务暂时繁忙，请稍后再试。";
 
         this.setData({
           consultMessages: this.data.consultMessages.concat(createMessage("assistant", content))

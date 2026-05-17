@@ -7,15 +7,15 @@
 1. 打开微信开发者工具。
 2. 选择“导入项目”。
 3. 项目目录选择本目录：`C:\Users\admin\Documents\xiangdongqu\miniprogram`。
-4. AppID 使用当前测试号：`wx960344d2e8aec1a1`。
+4. AppID 使用当前项目配置：`wx960344d2e8aec1a1`。
 
 ## 说明
 
 - `AppSecret` 不在小程序代码里，也不应该放进小程序前端。
-- 当前素材已压缩到 `assets` 目录，整个小程序目录约 2.6MB，方便测试号开发。
-- 智能咨询请求使用现有 Netlify 接口：
+- 当前素材已压缩到 `assets` 目录，小程序源码包约 733KB，满足主包 2MB 以内的上传要求。
+- 智能咨询请求使用现有 Netlify 服务地址：
   `https://xiangdongqu-digital-museum.netlify.app/api/ai-consult`
-- 开发阶段如果接口请求被拦截，可以在开发者工具里临时关闭“校验合法域名”。正式上线前需要在微信公众平台配置 request 合法域名。
+- 正式上线前需要在微信公众平台配置 request 合法域名。
 
 ## 正式上线前
 

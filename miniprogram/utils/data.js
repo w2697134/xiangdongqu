@@ -16,22 +16,22 @@ const featureCards = [
   {
     id: "about",
     title: "向东渠简介",
-    subtitle: "Xiangdongqu brief introduction",
-    action: "查看简介",
+    subtitle: "工程概况与精神传承",
+    action: "了解详情",
     image: `${ASSETS}/content/feature-about.jpg`
   },
   {
     id: "guide",
     title: "向东渠导览",
-    subtitle: "Xiangdongqu Guide",
+    subtitle: "线上展馆导览",
     action: "进入导览",
     image: `${ASSETS}/content/feature-guide.jpg`
   },
   {
     id: "digital",
     title: "数字馆导览",
-    subtitle: "Digital Library Guide",
-    action: "开始参观",
+    subtitle: "数字展馆参观入口",
+    action: "进入展馆",
     image: `${ASSETS}/content/feature-digital.jpg`
   }
 ];
@@ -97,7 +97,7 @@ const gallery = [
     id: "g5",
     title: "口述记忆",
     kind: "video",
-    summary: "预留人物访谈、讲述视频和短片内容入口。",
+    summary: "收录人物访谈、讲述视频和短片内容。",
     date: "视频资料",
     image: `${ASSETS}/content/gallery-waterline.jpg`
   },

@@ -24,7 +24,7 @@ export async function sendConsultMessage(messages: ConsultMessage[]) {
   }
 
   if (!response.ok) {
-    throw new Error(payload.error ?? "智能咨询接口暂时不可用");
+    throw new Error(payload.error ?? "智能讲解服务暂时繁忙，请稍后再试");
   }
 
   return payload.content ?? "";

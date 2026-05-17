@@ -86,14 +86,14 @@ function aiConsultPlugin(mode: string): Plugin {
 
           if (!apiResponse.ok) {
             res.statusCode = apiResponse.status;
-            res.end(JSON.stringify({ error: result.error?.message ?? "AI 接口请求失败。" }));
+            res.end(JSON.stringify({ error: result.error?.message ?? "智能讲解服务请求失败。" }));
             return;
           }
 
           res.end(JSON.stringify({ content: result.choices?.[0]?.message?.content ?? "" }));
         } catch (error) {
           res.statusCode = 500;
-          res.end(JSON.stringify({ error: error instanceof Error ? error.message : "智能咨询接口异常。" }));
+          res.end(JSON.stringify({ error: error instanceof Error ? error.message : "智能讲解服务暂时繁忙，请稍后再试。" }));
         }
       });
     },

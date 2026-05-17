@@ -22,8 +22,8 @@
   <view class="status-card">
     <view class="status-icon">{{label}}</view>
     <view class="status-copy">
-      <text>当前页面框架已预留</text>
-      <text>后续补充正式素材后，可直接替换这里的展陈区域。</text>
+      <text>线上展陈页</text>
+      <text>围绕栏目主题呈现导览说明、档案线索与影像资料入口。</text>
     </view>
   </view>
 
@@ -82,10 +82,12 @@
       bindtap="onTabTap"
     >
       <view class="tab-core">
-        <image class="tab-icon" src="{{item.icon}}" mode="aspectFit" />
+        <view class="tab-icon-wrap">
+          <image class="tab-icon" src="{{item.icon}}" mode="aspectFit" />
+          <text wx:if="{{item.badge}}" class="tab-badge">{{item.badge}}</text>
+        </view>
         <view class="tab-label">
           <text>{{item.label}}</text>
-          <text wx:if="{{item.badge}}" class="tab-badge">{{item.badge}}</text>
         </view>
       </view>
     </button>

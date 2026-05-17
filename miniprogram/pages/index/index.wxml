@@ -12,7 +12,7 @@
       </view>
     </view>
 
-    <scroll-view class="quick-nav" scroll-x="true" enable-flex="true">
+    <view class="quick-nav">
       <view
         wx:for="{{navItems}}"
         wx:key="id"
@@ -28,7 +28,7 @@
         </view>
         <text>{{item.label}}</text>
       </view>
-    </scroll-view>
+    </view>
 
     <scroll-view class="feature-strip" scroll-x="true" enable-flex="true">
       <view
@@ -216,10 +216,12 @@
       bindtap="onTabTap"
     >
       <view class="tab-core">
-        <image class="tab-icon" src="{{item.icon}}" mode="aspectFit" />
+        <view class="tab-icon-wrap">
+          <image class="tab-icon" src="{{item.icon}}" mode="aspectFit" />
+          <text wx:if="{{item.badge}}" class="tab-badge">{{item.badge}}</text>
+        </view>
         <view class="tab-label">
           <text>{{item.label}}</text>
-          <text wx:if="{{item.badge}}" class="tab-badge">{{item.badge}}</text>
         </view>
       </view>
     </button>

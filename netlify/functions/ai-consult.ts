@@ -53,12 +53,12 @@ export default async (req: Request) => {
     };
 
     if (!apiResponse.ok) {
-      return jsonResponse({ error: result.error?.message ?? "AI 接口请求失败。" }, apiResponse.status);
+      return jsonResponse({ error: result.error?.message ?? "智能讲解服务请求失败。" }, apiResponse.status);
     }
 
     return jsonResponse({ content: result.choices?.[0]?.message?.content ?? "" });
   } catch (error) {
-    return jsonResponse({ error: error instanceof Error ? error.message : "智能咨询接口异常。" }, 500);
+    return jsonResponse({ error: error instanceof Error ? error.message : "智能讲解服务暂时繁忙，请稍后再试。" }, 500);
   }
 };
 

@@ -76,33 +76,33 @@ function getPlaceholderCopy(kind: PlaceholderKind) {
   const copy: Record<PlaceholderKind, Pick<PlaceholderPageData, "eyebrow" | "status" | "description">> = {
     guide: {
       eyebrow: "展馆导览",
-      status: "展陈内容整理中",
-      description: "这一栏目将承接水渠实景、VR 展厅、历史节点和参观动线，后续接入正式图片、视频与导览说明。",
+      status: "线上展馆导览",
+      description: "汇集水渠实景、展厅 VR、历史节点与参观动线，便于快速进入各类展陈内容。",
     },
     feature: {
       eyebrow: "数字馆入口",
-      status: "专题内容整理中",
-      description: "专题页框架已预留，后续可放置简介、导览图、展陈图文和相关视频资料。",
+      status: "专题展陈",
+      description: "围绕向东渠简介、数字导览与相关资料，集中呈现工程记忆与精神传承。",
     },
     video: {
       eyebrow: "影像资料",
-      status: "影像资料归档中",
-      description: "视频封面、播放源、解说文字和相关资料正在预留位置，接入后可直接替换当前展陈卡片。",
+      status: "影像展映",
+      description: "收录向东渠风采、工程记忆和相关讲述内容，形成线上影像展陈入口。",
     },
     documentary: {
       eyebrow: "纪录片资料",
-      status: "纪录片资料整理中",
-      description: "这里将用于承载《国家记忆》相关片源、分集说明和背景资料，保持数字馆统一展陈风格。",
+      status: "纪录片展映",
+      description: "聚合《国家记忆》相关分集说明、背景资料与影像入口，呈现“一渠清水向东流”的历史叙事。",
     },
     gallery: {
       eyebrow: "图文影像",
-      status: "图文资料待归档",
-      description: "图片、档案、口述记忆和活动影像将集中整理到这里，当前先保留统一的内容框架。",
+      status: "图文档案",
+      description: "集中展示建设现场、渠首风貌、历史影像和沿线风光，形成可浏览的图文资料索引。",
     },
     news: {
       eyebrow: "资讯动态",
-      status: "动态内容整理中",
-      description: "这里将承载展馆更新、活动记录和资料上新信息，后续可接入正式列表或后台数据。",
+      status: "展馆动态",
+      description: "发布展馆更新、主题活动和资料上新信息，便于线上展馆持续运营。",
     },
   };
 
@@ -294,15 +294,11 @@ function TopNav({ data }: { data: HomePageData }) {
       <nav className="mobile-tab-nav" aria-label="手机底部导航">
         <a aria-current={activeItem === "home" ? "page" : undefined} className={mobileTabClass("home")} href="/" onClick={() => setActiveItem("home")}>
           <MobileTabIcon type="recommend" />
-          <span>推荐</span>
+          <span>首页</span>
         </a>
         <a aria-current={activeItem === "guide" ? "page" : undefined} className={mobileTabClass("guide")} href="/guide" onClick={() => setActiveItem("guide")}>
           <MobileTabIcon type="guide" />
           <span>导览</span>
-        </a>
-        <a aria-current={activeItem === "news" ? "page" : undefined} className={mobileTabClass("news")} href="/news" onClick={() => setActiveItem("news")}>
-          <MobileTabIcon type="news" />
-          <span>资讯</span>
         </a>
         <button
           aria-expanded={isConsultOpen}
@@ -313,10 +309,12 @@ function TopNav({ data }: { data: HomePageData }) {
           }}
           type="button"
         >
-          <Bot className="mobile-tab-icon" size={29} strokeWidth={2.1} />
-          <span className="mobile-tab-text">
-            咨询
+          <span className="mobile-tab-icon-wrap">
+            <Bot className="mobile-tab-icon" size={29} strokeWidth={2.1} />
             <em>AI</em>
+          </span>
+          <span className="mobile-tab-text">
+            智能咨询
           </span>
         </button>
       </nav>
@@ -458,8 +456,8 @@ function NotFoundRoutePage() {
       </div>
       <div className="route-placeholder-copy">
         <span className="route-eyebrow">访问提示</span>
-        <h1 id="route-not-found-title">页面未找到</h1>
-        <strong>暂无对应展陈内容</strong>
+        <h1 id="route-not-found-title">未找到相关展陈</h1>
+        <strong>请返回首页重新选择栏目</strong>
         <p>当前地址没有匹配到数字馆栏目或资料页，请返回首页重新选择入口。</p>
         <div className="route-actions">
           <a className="route-action primary" href="/">
@@ -644,14 +642,14 @@ function AiConsultWindow({ open, onClose }: { open: boolean; onClose: () => void
       const content = await sendConsultMessage(apiMessages);
       setMessages((currentMessages) => [
         ...currentMessages,
-        { role: "assistant", content: content || "接口没有返回内容。" },
+        { role: "assistant", content: content || "这条咨询暂时没有形成有效回复，请换个问法再试。" },
       ]);
     } catch (error) {
       setMessages((currentMessages) => [
         ...currentMessages,
         {
           role: "assistant",
-          content: error instanceof Error ? error.message : "智能咨询接口暂时不可用。",
+          content: error instanceof Error ? error.message : "智能讲解服务暂时繁忙，请稍后再试。",
         },
       ]);
     } finally {
@@ -771,7 +769,7 @@ function FeatureGrid({ items }: { items: FeatureCard[] }) {
       <div className="feature-grid">
         {items.map((item) => (
           <a className="feature-card" href={item.href} key={item.id}>
-            <MediaFrame image={item.image} tone={item.id} label="图片留白" alt="" />
+            <MediaFrame image={item.image} tone={item.id} label="展陈图" alt="" />
             <div className="feature-copy">
               <div>
                 <h2>{item.title}</h2>
@@ -810,7 +808,7 @@ function VideoSection({
           className="video-stage"
           href={currentVideo?.href ?? "/videos"}
         >
-          <MediaFrame image={currentVideo?.image} tone="video" label="视频封面留白" alt="" />
+          <MediaFrame image={currentVideo?.image} tone="video" label="影像封面" alt="" />
           <span className="play-button">
             <Play size={30} fill="currentColor" />
           </span>
@@ -852,7 +850,7 @@ function DocumentarySection({
       <div className="documentary-grid">
         {items.map((item) => (
           <a className="documentary-card" href={item.href} key={item.id}>
-            <MediaFrame image={item.image} tone="documentary" label="纪录片封面留白" alt="" />
+            <MediaFrame image={item.image} tone="documentary" label="纪录片封面" alt="" />
             <span className="play-button compact">
               <Play size={24} fill="currentColor" />
             </span>
@@ -885,7 +883,7 @@ function GallerySection({ items }: { items: GalleryItem[] }) {
                   <MediaFrame
                     image={item.image}
                     tone={`gallery-${index}`}
-                    label={item.kind === "video" ? "视频留白" : "图片留白"}
+                    label={item.kind === "video" ? "影像资料" : "图文资料"}
                     alt=""
                   />
                   {item.kind === "video" ? (
