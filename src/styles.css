@@ -1848,6 +1848,10 @@ button {
     padding: 18px;
   }
 
+  .gallery-note {
+    display: none;
+  }
+
   .gallery-feed {
     grid-auto-columns: minmax(226px, 70vw);
     grid-auto-flow: column;
