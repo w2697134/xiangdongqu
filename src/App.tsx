@@ -165,8 +165,11 @@ function TopNav() {
           }}
           type="button"
         >
-          <MobileTabIcon type="ai" />
-          <span>智能</span>
+          <Bot className="mobile-tab-icon" size={29} strokeWidth={2.1} />
+          <span className="mobile-tab-text">
+            咨询
+            <em>AI</em>
+          </span>
         </button>
       </nav>
       <AiConsultWindow open={isConsultOpen} onClose={() => setIsConsultOpen(false)} />
