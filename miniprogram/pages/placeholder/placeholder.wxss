@@ -428,7 +428,7 @@
 
 .tab-core {
   position: relative;
-  width: 124rpx;
+  width: 190rpx;
   height: 98rpx;
   display: flex;
   flex-direction: column;

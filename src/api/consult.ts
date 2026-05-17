@@ -12,7 +12,16 @@ export async function sendConsultMessage(messages: ConsultMessage[]) {
     body: JSON.stringify({ messages }),
   });
 
-  const payload = (await response.json()) as { content?: string; error?: string };
+  let payload: { content?: string; error?: string } = {};
+
+  try {
+    const contentType = response.headers.get("content-type") ?? "";
+    payload = contentType.includes("application/json")
+      ? ((await response.json()) as { content?: string; error?: string })
+      : { error: await response.text() };
+  } catch {
+    payload = {};
+  }
 
   if (!response.ok) {
     throw new Error(payload.error ?? "智能咨询接口暂时不可用");

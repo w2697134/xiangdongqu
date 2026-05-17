@@ -4,7 +4,7 @@ import { sendConsultMessage, type ConsultMessage } from "./api/consult";
 import { fetchHomePageData } from "./api/home";
 import type { FeatureCard, GalleryItem, HomePageData, NavItem, VideoItem } from "./types";
 
-type TopNavKey = "home" | "guide" | "news" | "ai";
+type TopNavKey = "home" | "guide" | "news" | "ai" | "none";
 type MobileTabIconType = "recommend" | "guide" | "news" | "ai";
 type PlaceholderKind = "guide" | "feature" | "video" | "documentary" | "gallery" | "news";
 
@@ -28,22 +28,40 @@ const iconMap = {
   news: "/assets/nav-icons/news-scroll.png",
 };
 
-function getTopNavActiveItem() {
-  const path = window.location.pathname;
+function isPathSegment(path: string, segment: string) {
+  return path === segment || path.startsWith(`${segment}/`);
+}
 
-  if (path.startsWith("/ai-consult")) {
+function getTopNavActiveItem(data: HomePageData) {
+  const path = normalizePath(window.location.pathname);
+
+  if (isPathSegment(path, "/ai-consult")) {
     return "ai";
   }
 
-  if (path.startsWith("/guide")) {
+  if (isPathSegment(path, "/guide")) {
     return "guide";
   }
 
-  if (path.startsWith("/news")) {
+  if (isPathSegment(path, "/news")) {
     return "news";
   }
 
-  return "home";
+  const navItem = data.navItems.find((item) => normalizePath(item.href) === path);
+  if (navItem) {
+    return navItem.id === "news" ? "news" : "guide";
+  }
+
+  const featureItem = data.featureCards.find((item) => normalizePath(item.href) === path);
+  if (featureItem?.id === "guide" || featureItem?.id === "digital") {
+    return "guide";
+  }
+
+  if (path === "/" || featureItem?.id === "about" || isPathSegment(path, "/videos") || isPathSegment(path, "/documentary") || isPathSegment(path, "/gallery")) {
+    return "home";
+  }
+
+  return "none";
 }
 
 function normalizePath(pathname: string) {
@@ -159,7 +177,7 @@ function getRoutePage(pathname: string, data: HomePageData): PlaceholderPageData
     return createPlaceholderPage(navItem.id === "news" ? "news" : "guide", navItem.label);
   }
 
-  return createPlaceholderPage("feature", "数字馆内容");
+  return null;
 }
 
 function App() {
@@ -190,20 +208,30 @@ function App() {
     );
   }
 
-  const routePage = getRoutePage(window.location.pathname, data);
+  const currentPath = normalizePath(window.location.pathname);
+  const routePage = getRoutePage(currentPath, data);
 
   if (routePage) {
     return (
       <main className="app">
-        <TopNav />
+        <TopNav data={data} />
         <PlaceholderRoutePage page={routePage} />
+      </main>
+    );
+  }
+
+  if (currentPath !== "/") {
+    return (
+      <main className="app">
+        <TopNav data={data} />
+        <NotFoundRoutePage />
       </main>
     );
   }
 
   return (
     <main className="app">
-      <TopNav />
+      <TopNav data={data} />
       <Hero />
       <QuickNav items={data.navItems} />
       <FeatureGrid items={data.featureCards} />
@@ -211,6 +239,7 @@ function App() {
         title="向东渠风采"
         items={data.videos}
         selectedVideo={selectedVideo}
+        onSelectVideo={setSelectedVideo}
       />
       <DocumentarySection
         items={data.documentary}
@@ -220,12 +249,12 @@ function App() {
   );
 }
 
-function TopNav() {
-  const [activeItem, setActiveItem] = useState<TopNavKey>(getTopNavActiveItem);
+function TopNav({ data }: { data: HomePageData }) {
+  const [activeItem, setActiveItem] = useState<TopNavKey>(() => getTopNavActiveItem(data));
   const [isConsultOpen, setIsConsultOpen] = useState(false);
-  const linkClass = (item: TopNavKey) =>
+  const linkClass = (item: Exclude<TopNavKey, "none">) =>
     item === activeItem ? "top-nav-link active" : "top-nav-link";
-  const mobileTabClass = (item: TopNavKey) =>
+  const mobileTabClass = (item: Exclude<TopNavKey, "none">) =>
     item === activeItem ? "mobile-tab-link active" : "mobile-tab-link";
 
   return (
@@ -236,15 +265,16 @@ function TopNav() {
           <span>向东渠事迹数字馆</span>
         </div>
         <nav className="top-nav" aria-label="顶部主导航">
-          <a className={linkClass("home")} href="/" onClick={() => setActiveItem("home")}>
+          <a aria-current={activeItem === "home" ? "page" : undefined} className={linkClass("home")} href="/" onClick={() => setActiveItem("home")}>
             <Home size={18} strokeWidth={2.1} />
             <span>首页</span>
           </a>
-          <a className={linkClass("guide")} href="/guide" onClick={() => setActiveItem("guide")}>
+          <a aria-current={activeItem === "guide" ? "page" : undefined} className={linkClass("guide")} href="/guide" onClick={() => setActiveItem("guide")}>
             <Compass size={18} strokeWidth={2.1} />
             <span>导览</span>
           </a>
           <button
+            aria-expanded={isConsultOpen}
             className={`${linkClass("ai")} ai`}
             onClick={() => {
               setActiveItem("ai");
@@ -259,19 +289,20 @@ function TopNav() {
         </nav>
       </header>
       <nav className="mobile-tab-nav" aria-label="手机底部导航">
-        <a className={mobileTabClass("home")} href="/" onClick={() => setActiveItem("home")}>
+        <a aria-current={activeItem === "home" ? "page" : undefined} className={mobileTabClass("home")} href="/" onClick={() => setActiveItem("home")}>
           <MobileTabIcon type="recommend" />
           <span>推荐</span>
         </a>
-        <a className={mobileTabClass("guide")} href="/guide" onClick={() => setActiveItem("guide")}>
+        <a aria-current={activeItem === "guide" ? "page" : undefined} className={mobileTabClass("guide")} href="/guide" onClick={() => setActiveItem("guide")}>
           <MobileTabIcon type="guide" />
           <span>导览</span>
         </a>
-        <a className={mobileTabClass("news")} href="/news" onClick={() => setActiveItem("news")}>
+        <a aria-current={activeItem === "news" ? "page" : undefined} className={mobileTabClass("news")} href="/news" onClick={() => setActiveItem("news")}>
           <MobileTabIcon type="news" />
           <span>资讯</span>
         </a>
         <button
+          aria-expanded={isConsultOpen}
           className={mobileTabClass("ai")}
           onClick={() => {
             setActiveItem("ai");
@@ -409,6 +440,34 @@ function PlaceholderRoutePage({ page }: { page: PlaceholderPageData }) {
   );
 }
 
+function NotFoundRoutePage() {
+  return (
+    <section className="route-placeholder route-not-found" aria-labelledby="route-not-found-title">
+      <div className="route-placeholder-art" aria-hidden="true">
+        <div className="paper-sheet paper-sheet-back" />
+        <div className="paper-sheet paper-sheet-front">
+          <span className="canal-line canal-line-main" />
+          <span className="canal-line canal-line-soft" />
+          <span className="archive-line archive-line-one" />
+          <span className="archive-line archive-line-two" />
+          <span className="seal-mark">向东</span>
+        </div>
+      </div>
+      <div className="route-placeholder-copy">
+        <span className="route-eyebrow">访问提示</span>
+        <h1 id="route-not-found-title">页面未找到</h1>
+        <strong>暂无对应展陈内容</strong>
+        <p>当前地址没有匹配到数字馆栏目或资料页，请返回首页重新选择入口。</p>
+        <div className="route-actions">
+          <a className="route-action primary" href="/">
+            返回首页
+          </a>
+        </div>
+      </div>
+    </section>
+  );
+}
+
 function renderMessageContent(content: string) {
   return content.split(/(\*\*[^*]+\*\*)/g).map((part, index) => {
     if (part.startsWith("**") && part.endsWith("**")) {
@@ -539,9 +598,11 @@ function AiConsultWindow({ open, onClose }: { open: boolean; onClose: () => void
 
       const nextX = dragState.current.originX + event.clientX - dragState.current.startX;
       const nextY = dragState.current.originY + event.clientY - dragState.current.startY;
+      const panelWidth = Math.min(410, window.innerWidth - 24);
+      const panelHeight = Math.min(560, window.innerHeight - 82);
       setPosition({
-        x: Math.min(Math.max(12, nextX), Math.max(12, window.innerWidth - 430)),
-        y: Math.min(Math.max(64, nextY), Math.max(64, window.innerHeight - 460)),
+        x: Math.min(Math.max(12, nextX), Math.max(12, window.innerWidth - panelWidth - 12)),
+        y: Math.min(Math.max(64, nextY), Math.max(64, window.innerHeight - panelHeight - 12)),
       });
     };
 
@@ -729,10 +790,12 @@ function VideoSection({
   title,
   items,
   selectedVideo,
+  onSelectVideo,
 }: {
   title: string;
   items: VideoItem[];
   selectedVideo: VideoItem | null;
+  onSelectVideo: (item: VideoItem) => void;
 }) {
   const currentVideo = selectedVideo ?? items[0];
 
@@ -755,17 +818,19 @@ function VideoSection({
         </a>
         <div className="video-list" aria-label="视频列表">
           {items.map((item) => (
-            <a
+            <button
+              aria-pressed={item.id === selectedVideo?.id}
               className={item.id === selectedVideo?.id ? "video-row active" : "video-row"}
-              href={item.href}
               key={item.id}
+              onClick={() => onSelectVideo(item)}
+              type="button"
             >
               <span className="video-row-thumb">
                 <Play size={16} fill="currentColor" />
               </span>
               <span>{item.title}</span>
               <em>{item.duration}</em>
-            </a>
+            </button>
           ))}
         </div>
       </div>

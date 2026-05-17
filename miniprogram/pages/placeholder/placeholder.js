@@ -77,7 +77,7 @@ function createMessage(role, content) {
 }
 
 function getActiveTab(type) {
-  return type === "guide" || type === "news" ? type : "home";
+  return type === "guide" ? "guide" : "home";
 }
 
 function createPlaceholderUrl({ type = "feature", id = "", title = "向东渠内容", kind = "mixed" }) {
@@ -284,7 +284,7 @@ Page({
 
     this.setData({
       panelX: Math.max(-36, Math.min(36, nextX)),
-      panelY: Math.max(-220, Math.min(36, nextY))
+      panelY: Math.max(-220, Math.min(0, nextY))
     });
   },
 

@@ -50,6 +50,12 @@ button {
   font: inherit;
 }
 
+a:focus-visible,
+button:focus-visible {
+  outline: 3px solid rgba(170, 43, 49, 0.42);
+  outline-offset: 4px;
+}
+
 .sr-only {
   position: absolute;
   width: 1px;
@@ -1177,6 +1183,8 @@ button {
 }
 
 .video-row {
+  width: 100%;
+  appearance: none;
   display: grid;
   grid-template-columns: clamp(42px, 3vw, 68px) minmax(0, 1fr) auto;
   align-items: center;

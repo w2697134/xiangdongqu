@@ -79,7 +79,6 @@ Page({
     gallery: museumData.gallery,
     tabs: museumData.tabs,
     activeTab: "home",
-    selectedGuide: "全景水渠",
     consultOpen: false,
     consultInput: "",
     consultMessages: [
@@ -118,14 +117,6 @@ Page({
     this.setData({
       activeTab: tab,
       consultOpen: false
-    });
-  },
-
-  showGuide(event) {
-    const label = event.currentTarget.dataset.label || "全景水渠";
-    this.setData({
-      activeTab: "guide",
-      selectedGuide: label
     });
   },
 
@@ -258,7 +249,7 @@ Page({
 
     this.setData({
       panelX: Math.max(-36, Math.min(36, nextX)),
-      panelY: Math.max(-220, Math.min(36, nextY))
+      panelY: Math.max(-220, Math.min(0, nextY))
     });
   },
 

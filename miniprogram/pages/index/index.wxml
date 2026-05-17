@@ -17,7 +17,7 @@
         wx:for="{{navItems}}"
         wx:key="id"
         class="quick-nav-item"
-        data-type="guide"
+        data-type="{{item.id == 'news' ? 'news' : 'guide'}}"
         data-id="{{item.id}}"
         data-title="{{item.label}}"
         data-kind="mixed"
@@ -86,7 +86,7 @@
           data-id="{{item.id}}"
           data-title="{{item.title}}"
           data-type="video"
-          bindtap="openVideo"
+          bindtap="selectVideo"
         >
           <view class="video-row-icon">▶</view>
           <view class="video-row-copy">
@@ -162,66 +162,6 @@
           </view>
         </view>
       </scroll-view>
-    </view>
-  </view>
-
-  <view wx:if="{{activeTab == 'guide'}}" class="simple-view">
-    <view class="simple-hero">
-      <text class="simple-title">导览</text>
-      <text class="simple-subtitle">当前栏目：{{selectedGuide}}</text>
-    </view>
-    <view class="guide-grid">
-      <view
-        wx:for="{{navItems}}"
-        wx:key="id"
-        class="guide-item {{selectedGuide == item.label ? 'active' : ''}}"
-        data-type="guide"
-        data-id="{{item.id}}"
-        data-title="{{item.label}}"
-        data-kind="mixed"
-        bindtap="openPlaceholder"
-      >
-        <image src="{{item.icon}}" mode="aspectFit" />
-        <text>{{item.label}}</text>
-      </view>
-    </view>
-    <view
-      class="guide-card"
-      data-type="guide"
-      data-id="selected"
-      data-title="{{selectedGuide}}"
-      data-kind="mixed"
-      bindtap="openPlaceholder"
-    >
-      <text class="guide-title">{{selectedGuide}}</text>
-      <text class="guide-text">围绕向东渠建设历史、工程节点、展馆陈列和今日云霄进行移动端导览展示。</text>
-      <text class="text-link">进入栏目 ›</text>
-    </view>
-  </view>
-
-  <view wx:if="{{activeTab == 'news'}}" class="simple-view">
-    <view class="simple-hero">
-      <text class="simple-title">资讯动态</text>
-      <text class="simple-subtitle">展馆内容、活动记录与素材更新</text>
-    </view>
-    <view class="news-list">
-      <view
-        wx:for="{{gallery}}"
-        wx:key="id"
-        class="news-card"
-        data-type="news"
-        data-id="{{item.id}}"
-        data-title="{{item.title}}"
-        data-kind="{{item.kind}}"
-        bindtap="openPlaceholder"
-      >
-        <image src="{{item.image}}" mode="aspectFill" />
-        <view>
-          <text class="news-title">{{item.title}}</text>
-          <text class="news-text">{{item.summary}}</text>
-          <text class="news-date">{{item.date}}</text>
-        </view>
-      </view>
     </view>
   </view>
 

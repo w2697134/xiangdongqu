@@ -110,10 +110,9 @@ const gallery = [
 ];
 
 const tabs = [
-  { id: "home", label: "推荐", icon: `${ASSETS}/tab/home.svg` },
+  { id: "home", label: "首页", icon: `${ASSETS}/tab/home.svg` },
   { id: "guide", label: "导览", icon: `${ASSETS}/tab/guide.svg` },
-  { id: "news", label: "资讯", icon: `${ASSETS}/tab/news.svg` },
-  { id: "consult", label: "咨询", icon: `${ASSETS}/tab/bot.svg`, badge: "AI" }
+  { id: "consult", label: "智能咨询", icon: `${ASSETS}/tab/bot.svg`, badge: "AI" }
 ];
 
 module.exports = {
