@@ -1,0 +1,14 @@
+{
+  "pages": [
+    "pages/index/index"
+  ],
+  "window": {
+    "navigationBarTitleText": "向东渠事迹数字馆",
+    "navigationBarBackgroundColor": "#fff7e9",
+    "navigationBarTextStyle": "black",
+    "backgroundColor": "#efe6d6",
+    "backgroundTextStyle": "dark"
+  },
+  "style": "v2",
+  "sitemapLocation": "sitemap.json"
+}

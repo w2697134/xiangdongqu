@@ -1641,6 +1641,7 @@ button {
 
   .feature-card {
     flex: 0 0 min(70vw, 268px);
+    height: 330px;
     min-width: 0;
     scroll-snap-align: start;
   }
@@ -1754,7 +1755,8 @@ button {
   .video-row {
     flex: 0 0 min(66vw, 252px);
     grid-template-columns: 38px minmax(0, 1fr);
-    min-height: 68px;
+    height: 76px;
+    min-height: 76px;
     gap: 10px;
     padding: 10px;
     scroll-snap-align: start;
@@ -1787,16 +1789,19 @@ button {
 
   .documentary-card {
     flex: 0 0 min(70vw, 268px);
+    height: 276px;
     scroll-snap-align: start;
   }
 
   .documentary-card strong {
-    display: block;
-    overflow: visible;
+    display: -webkit-box;
+    overflow: hidden;
     min-height: 0;
     padding: 12px;
     font-size: var(--fs-doc-title);
     line-height: 1.42;
+    -webkit-line-clamp: 3;
+    -webkit-box-orient: vertical;
   }
 
   .gallery-panel-head {
@@ -1827,6 +1832,7 @@ button {
   .gallery-feed-card {
     grid-template-columns: 1fr;
     gap: 0;
+    height: 360px;
     min-height: 0;
     scroll-snap-align: start;
   }
@@ -1839,6 +1845,20 @@ button {
 
   .gallery-copy {
     padding: 12px;
+  }
+
+  .feature-copy h2,
+  .gallery-copy h3 {
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+  }
+
+  .gallery-copy p {
+    display: -webkit-box;
+    overflow: hidden;
+    -webkit-line-clamp: 3;
+    -webkit-box-orient: vertical;
   }
 
   .quick-nav,

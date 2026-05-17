@@ -1,0 +1,222 @@
+<view class="museum-page">
+  <view wx:if="{{activeTab == 'home' || activeTab == 'consult'}}" class="home-view">
+    <view class="hero">
+      <image class="hero-bg" src="/assets/hero/hero-banner.jpg" mode="aspectFill" />
+      <view class="hero-content">
+        <image class="hero-title" src="/assets/hero/title-calligraphy.png" mode="widthFix" />
+        <text class="hero-subtitle">事迹数字馆</text>
+        <view class="hero-meta">
+          <text>中共云霄县委党史和地方志研究室</text>
+          <text>中共云霄县委党建办</text>
+        </view>
+      </view>
+    </view>
+
+    <scroll-view class="quick-nav" scroll-x="true" enable-flex="true">
+      <view
+        wx:for="{{navItems}}"
+        wx:key="id"
+        class="quick-nav-item"
+        data-label="{{item.label}}"
+        bindtap="showGuide"
+      >
+        <view class="quick-nav-icon">
+          <image src="{{item.icon}}" mode="aspectFit" />
+        </view>
+        <text>{{item.label}}</text>
+      </view>
+    </scroll-view>
+
+    <scroll-view class="feature-strip" scroll-x="true" enable-flex="true">
+      <view wx:for="{{featureCards}}" wx:key="id" class="feature-card">
+        <image class="card-image" src="{{item.image}}" mode="aspectFill" />
+        <view class="feature-copy">
+          <view>
+            <text class="feature-title">{{item.title}}</text>
+            <text class="feature-subtitle">{{item.subtitle}}</text>
+          </view>
+          <text class="text-link">{{item.action}} ›</text>
+        </view>
+      </view>
+    </scroll-view>
+
+    <view class="section">
+      <view class="section-head">
+        <text class="section-title">向东渠风采</text>
+        <text class="section-link">全部 ›</text>
+      </view>
+      <view class="video-stage" data-title="{{selectedVideo.title}}" bindtap="openVideo">
+        <image class="video-cover" src="{{selectedVideo.image}}" mode="aspectFill" />
+        <view class="play-button">▶</view>
+        <view class="video-title-bar">
+          <text>{{selectedVideo.title}}</text>
+          <text>{{selectedVideo.duration}}</text>
+        </view>
+      </view>
+      <scroll-view class="video-list" scroll-x="true" enable-flex="true">
+        <view
+          wx:for="{{videos}}"
+          wx:key="id"
+          class="video-row {{selectedVideo.id == item.id ? 'active' : ''}}"
+          data-id="{{item.id}}"
+          bindtap="selectVideo"
+        >
+          <view class="video-row-icon">▶</view>
+          <view class="video-row-copy">
+            <text class="video-row-title">{{item.title}}</text>
+            <text class="video-duration">{{item.duration}}</text>
+          </view>
+        </view>
+      </scroll-view>
+    </view>
+
+    <view class="section">
+      <view class="section-head">
+        <view>
+          <text class="section-title">央视纪录片《国家记忆》</text>
+          <text class="section-subtitle">一渠清水向东流</text>
+        </view>
+        <text class="section-link">全部 ›</text>
+      </view>
+      <scroll-view class="doc-strip" scroll-x="true" enable-flex="true">
+        <view
+          wx:for="{{documentary}}"
+          wx:key="id"
+          class="doc-card"
+          data-title="{{item.title}}"
+          bindtap="openVideo"
+        >
+          <image class="doc-image" src="{{item.image}}" mode="aspectFill" />
+          <view class="doc-copy">
+            <text>{{item.title}}</text>
+            <text>{{item.subtitle}}</text>
+          </view>
+        </view>
+      </scroll-view>
+    </view>
+
+    <view class="gallery-panel">
+      <view class="gallery-head">
+        <text class="gallery-title">图文影像</text>
+        <text class="gallery-link">查看全部 ›</text>
+      </view>
+      <scroll-view class="gallery-feed" scroll-x="true" enable-flex="true">
+        <view
+          wx:for="{{gallery}}"
+          wx:key="id"
+          class="gallery-card"
+          data-src="{{item.image}}"
+          bindtap="previewImage"
+        >
+          <image class="gallery-image" src="{{item.image}}" mode="aspectFill" />
+          <view class="gallery-copy">
+            <view class="gallery-chip {{item.kind == 'video' ? 'video' : ''}}">{{item.date}}</view>
+            <text class="gallery-card-title">{{item.title}}</text>
+            <text class="gallery-summary">{{item.summary}}</text>
+          </view>
+        </view>
+      </scroll-view>
+    </view>
+  </view>
+
+  <view wx:if="{{activeTab == 'guide'}}" class="simple-view">
+    <view class="simple-hero">
+      <text class="simple-title">导览</text>
+      <text class="simple-subtitle">当前栏目：{{selectedGuide}}</text>
+    </view>
+    <view class="guide-grid">
+      <view
+        wx:for="{{navItems}}"
+        wx:key="id"
+        class="guide-item {{selectedGuide == item.label ? 'active' : ''}}"
+        data-label="{{item.label}}"
+        bindtap="showGuide"
+      >
+        <image src="{{item.icon}}" mode="aspectFit" />
+        <text>{{item.label}}</text>
+      </view>
+    </view>
+    <view class="guide-card">
+      <text class="guide-title">{{selectedGuide}}</text>
+      <text class="guide-text">围绕向东渠建设历史、工程节点、展馆陈列和今日云霄进行移动端导览展示。</text>
+      <text class="text-link">进入栏目 ›</text>
+    </view>
+  </view>
+
+  <view wx:if="{{activeTab == 'news'}}" class="simple-view">
+    <view class="simple-hero">
+      <text class="simple-title">资讯动态</text>
+      <text class="simple-subtitle">展馆内容、活动记录与素材更新</text>
+    </view>
+    <view class="news-list">
+      <view wx:for="{{gallery}}" wx:key="id" class="news-card">
+        <image src="{{item.image}}" mode="aspectFill" />
+        <view>
+          <text class="news-title">{{item.title}}</text>
+          <text class="news-text">{{item.summary}}</text>
+          <text class="news-date">{{item.date}}</text>
+        </view>
+      </view>
+    </view>
+  </view>
+
+  <view
+    wx:if="{{consultOpen}}"
+    class="consult-panel"
+    style="transform: translate({{panelX}}px, {{panelY}}px);"
+  >
+    <view
+      class="consult-head"
+      bindtouchstart="onPanelTouchStart"
+      bindtouchmove="onPanelTouchMove"
+      bindtouchend="onPanelTouchEnd"
+      bindtouchcancel="onPanelTouchEnd"
+    >
+      <image class="consult-icon" src="/assets/tab/bot.svg" mode="aspectFit" />
+      <view class="consult-title">
+        <text>智能咨询</text>
+        <text>向东渠数字馆 AI 问答</text>
+      </view>
+      <button class="consult-close" bindtap="closeConsult">×</button>
+    </view>
+    <scroll-view class="consult-body" scroll-y="true">
+      <view
+        wx:for="{{consultMessages}}"
+        wx:key="index"
+        class="message {{item.role == 'assistant' ? 'assistant' : 'user'}}"
+      >
+        <rich-text nodes="{{item.html}}" />
+      </view>
+      <view wx:if="{{isConsulting}}" class="message assistant muted">正在查询...</view>
+    </scroll-view>
+    <view class="consult-input">
+      <input
+        value="{{consultInput}}"
+        placeholder="输入想了解的内容"
+        confirm-type="send"
+        disabled="{{isConsulting}}"
+        bindinput="onConsultInput"
+        bindconfirm="submitConsult"
+      />
+      <button disabled="{{isConsulting}}" bindtap="submitConsult">发送</button>
+    </view>
+  </view>
+
+  <view class="bottom-nav">
+    <button
+      wx:for="{{tabs}}"
+      wx:key="id"
+      class="bottom-tab {{activeTab == item.id ? 'active' : ''}}"
+      data-tab="{{item.id}}"
+      bindtap="onTabTap"
+    >
+      <view class="tab-core">
+        <image class="tab-icon" src="{{item.icon}}" mode="aspectFit" />
+        <view class="tab-label">
+          <text>{{item.label}}</text>
+          <text wx:if="{{item.badge}}" class="tab-badge">{{item.badge}}</text>
+        </view>
+      </view>
+    </button>
+  </view>
+</view>
