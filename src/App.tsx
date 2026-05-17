@@ -640,7 +640,7 @@ function DocumentarySection({
 }) {
   return (
     <section className="section">
-      <SectionHead title="央视纪录片《国家记忆——一渠清水向东流》" href="/documentary" />
+      <SectionHead title="央视纪录片《国家记忆》" subtitle="一渠清水向东流" href="/documentary" />
       <div className="documentary-grid">
         {items.map((item) => (
           <button className="documentary-card" key={item.id} onClick={() => onSelect(item)} type="button">
@@ -709,10 +709,13 @@ function GallerySection({ items }: { items: GalleryItem[] }) {
   );
 }
 
-function SectionHead({ title, href }: { title: string; href: string }) {
+function SectionHead({ title, subtitle, href }: { title: string; subtitle?: string; href: string }) {
   return (
     <div className="section-head">
-      <h2>{title}</h2>
+      <div className="section-head-title">
+        <h2>{title}</h2>
+        {subtitle ? <p>{subtitle}</p> : null}
+      </div>
       <a href={href}>
         更多
         <ChevronRight size={18} />
