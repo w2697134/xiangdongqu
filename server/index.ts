@@ -8,6 +8,7 @@ const __dirname = fileURLToPath(new URL(".", import.meta.url));
 const rootDir = resolve(__dirname, "../..");
 const distDir = resolve(rootDir, "dist");
 const indexHtml = join(distDir, "index.html");
+const host = process.env.HOST || "127.0.0.1";
 const port = Number(process.env.PORT || 3000);
 
 const contentTypes: Record<string, string> = {
@@ -74,6 +75,6 @@ const server = createServer((req, res) => {
   res.end("Not found");
 });
 
-server.listen(port, "127.0.0.1", () => {
-  console.log(`xiangdongqu server listening on http://127.0.0.1:${port}`);
+server.listen(port, host, () => {
+  console.log(`xiangdongqu server listening on http://${host}:${port}`);
 });
