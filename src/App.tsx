@@ -933,7 +933,7 @@ function AiConsultWindow({ open, onClose }: { open: boolean; onClose: () => void
             {renderMarkdownMessage(message.content)}
           </div>
         ))}
-        {isConsulting ? <p className="ai-message assistant muted">正在查询...</p> : null}
+        {isConsulting ? <p className="ai-message assistant muted">回复中</p> : null}
         <div className="ai-consult-prompts" aria-label="快捷问题">
           {consultPrompts.map((question) => (
             <button disabled={isConsulting} key={question} onClick={() => submitQuestion(question)} type="button">
@@ -951,12 +951,11 @@ function AiConsultWindow({ open, onClose }: { open: boolean; onClose: () => void
       >
         <input
           aria-label="输入咨询问题"
-          disabled={isConsulting}
           onChange={(event) => setInput(event.target.value)}
           placeholder="输入想了解的内容"
           value={input}
         />
-        <button disabled={isConsulting} type="submit" aria-label="发送问题">
+        <button disabled={isConsulting || !input.trim()} type="submit" aria-label="发送问题">
           <Send size={17} />
         </button>
       </form>

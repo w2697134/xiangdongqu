@@ -825,7 +825,6 @@ button:focus-visible {
 }
 
 .ai-consult-prompts button:disabled,
-.ai-consult-input input:disabled,
 .ai-consult-input button:disabled {
   cursor: wait;
   opacity: 0.62;
@@ -867,6 +866,13 @@ button:focus-visible {
   background: var(--red);
   color: #fff7eb;
   cursor: pointer;
+}
+
+.ai-consult-input button:disabled {
+  background: #d7cbbb;
+  color: #9c756f;
+  cursor: not-allowed;
+  opacity: 1;
 }
 
 .hero {

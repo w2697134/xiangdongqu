@@ -192,14 +192,13 @@
       >
         <rich-text nodes="{{item.html}}" />
       </view>
-      <view wx:if="{{isConsulting}}" class="message assistant muted">正在查询...</view>
+      <view wx:if="{{isConsulting}}" class="message assistant muted">回复中</view>
     </scroll-view>
     <view class="consult-input">
       <input
         value="{{consultInput}}"
         placeholder="输入想了解的内容"
         confirm-type="send"
-        disabled="{{isConsulting}}"
         bindinput="onConsultInput"
         bindconfirm="submitConsult"
       />

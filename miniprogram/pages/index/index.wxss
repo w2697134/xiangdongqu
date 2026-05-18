@@ -666,7 +666,9 @@
 }
 
 .consult-input button[disabled] {
-  opacity: 0.52;
+  background: #d7cbbb;
+  color: #9c756f;
+  opacity: 1;
 }
 
 .bottom-nav {
