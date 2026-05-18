@@ -24,6 +24,7 @@
 
 * {
   box-sizing: border-box;
+  -webkit-tap-highlight-color: transparent;
 }
 
 html {
@@ -48,8 +49,10 @@ a {
 }
 
 button {
+  appearance: none;
   color: inherit;
   font: inherit;
+  -webkit-appearance: none;
   -webkit-tap-highlight-color: transparent;
   touch-action: manipulation;
 }
@@ -63,6 +66,29 @@ a:focus-visible,
 button:focus-visible {
   outline: 3px solid rgba(170, 43, 49, 0.42);
   outline-offset: 4px;
+}
+
+@media (hover: none), (pointer: coarse) {
+  a,
+  button,
+  [role="button"],
+  summary {
+    -webkit-tap-highlight-color: transparent;
+  }
+
+  a:focus,
+  button:focus,
+  [role="button"]:focus,
+  summary:focus {
+    outline: none;
+  }
+
+  a:focus-visible,
+  button:focus-visible,
+  [role="button"]:focus-visible,
+  summary:focus-visible {
+    outline: none;
+  }
 }
 
 .sr-only {
