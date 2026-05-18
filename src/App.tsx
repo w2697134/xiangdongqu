@@ -993,12 +993,16 @@ function QuickNav({ items }: { items: NavItem[] }) {
         const iconSrc = iconMap[item.id as keyof typeof iconMap];
 
         return (
-          <a className="quick-nav-item" href={item.href} key={item.id}>
-            <span className="quick-nav-icon">
-              {iconSrc ? <img src={iconSrc} alt="" loading="lazy" /> : null}
+          <div className="quick-nav-item" key={item.id}>
+            <a className="quick-nav-button" href={item.href} aria-label={item.label}>
+              <span className="quick-nav-icon">
+                {iconSrc ? <img src={iconSrc} alt="" loading="lazy" /> : null}
+              </span>
+            </a>
+            <span className="quick-nav-label" aria-hidden="true">
+              {item.label}
             </span>
-            <span>{item.label}</span>
-          </a>
+          </div>
         );
       })}
     </nav>
