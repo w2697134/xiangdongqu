@@ -1,5 +1,6 @@
-import { createReadStream, existsSync, statSync } from "node:fs";
-import { createServer, type ServerResponse } from "node:http";
+import { createReadStream, existsSync, readFileSync, statSync } from "node:fs";
+import { createServer, type IncomingMessage, type ServerResponse } from "node:http";
+import { createServer as createHttpsServer } from "node:https";
 import { extname, join, normalize, resolve } from "node:path";
 import { fileURLToPath } from "node:url";
 import aiConsultHandler from "../api/ai-consult.js";
@@ -10,6 +11,9 @@ const distDir = resolve(rootDir, "dist");
 const indexHtml = join(distDir, "index.html");
 const host = process.env.HOST || "127.0.0.1";
 const port = Number(process.env.PORT || 3000);
+const httpsPort = process.env.HTTPS_PORT ? Number(process.env.HTTPS_PORT) : null;
+const sslCertPath = process.env.SSL_CERT_PATH;
+const sslKeyPath = process.env.SSL_KEY_PATH;
 
 const contentTypes: Record<string, string> = {
   ".css": "text/css; charset=utf-8",
@@ -50,7 +54,7 @@ function resolveStaticPath(pathname: string) {
   return null;
 }
 
-const server = createServer((req, res) => {
+function handleRequest(req: IncomingMessage, res: ServerResponse) {
   const url = new URL(req.url || "/", `http://${req.headers.host || "localhost"}`);
 
   if (url.pathname === "/api/ai-consult") {
@@ -73,8 +77,24 @@ const server = createServer((req, res) => {
   res.statusCode = 404;
   res.setHeader("Content-Type", "text/plain; charset=utf-8");
   res.end("Not found");
-});
+}
+
+const server = createServer(handleRequest);
 
 server.listen(port, host, () => {
   console.log(`xiangdongqu server listening on http://${host}:${port}`);
 });
+
+if (httpsPort && sslCertPath && sslKeyPath) {
+  const httpsServer = createHttpsServer(
+    {
+      cert: readFileSync(sslCertPath),
+      key: readFileSync(sslKeyPath),
+    },
+    handleRequest,
+  );
+
+  httpsServer.listen(httpsPort, host, () => {
+    console.log(`xiangdongqu server listening on https://${host}:${httpsPort}`);
+  });
+}
