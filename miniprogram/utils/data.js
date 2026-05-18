@@ -126,5 +126,5 @@ module.exports = {
   gallery,
   tabs,
   consultWelcome,
-  consultApiUrl: "https://xiangdongqu-digital-museum.netlify.app/api/ai-consult"
+  consultApiUrl: "https://dreamlab.website/api/ai-consult"
 };

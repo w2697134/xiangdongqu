@@ -13,9 +13,9 @@
 
 - `AppSecret` 不在小程序代码里，也不应该放进小程序前端。
 - 当前素材已压缩到 `assets` 目录，小程序源码包约 740KB，满足主包 2MB 以内的上传要求。
-- 智能咨询请求使用现有 Netlify 服务地址：
-  `https://xiangdongqu-digital-museum.netlify.app/api/ai-consult`
-- 当前 AppID 的服务器域名需包含：`https://xiangdongqu-digital-museum.netlify.app`。
+- 智能咨询请求使用正式站服务地址：
+  `https://dreamlab.website/api/ai-consult`
+- 当前 AppID 的 request 合法域名需包含：`https://dreamlab.website`。
 
 ## 发布流程
 

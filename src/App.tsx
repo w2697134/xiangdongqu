@@ -7,6 +7,10 @@ import type { FeatureCard, GalleryItem, HomePageData, NavItem, VideoItem } from 
 type TopNavKey = "home" | "guide" | "news" | "ai" | "none";
 type MobileTabIconType = "recommend" | "guide" | "news" | "ai";
 type DetailKind = "guide" | "feature" | "video" | "documentary" | "gallery" | "news";
+type ConsultWindowPosition = {
+  x: number;
+  y: number;
+};
 
 type DetailPageData = {
   kind: DetailKind;
@@ -48,6 +52,9 @@ const iconMap = {
 const consultWelcome = "您好，我是向东渠数字馆讲解助手。可以问我工程概况、通水时间、向东渠精神，也可以让我帮您找到视频、纪录片和图文影像入口。";
 const consultPrompts = ["向东渠工程概况", "向东渠精神是什么？", "数字馆有哪些入口？", "纪录片在哪里看？"];
 const consultOpenStorageKey = "xiangdongqu-consult-open";
+const consultMessagesStorageKey = "xiangdongqu-consult-messages";
+const consultInputStorageKey = "xiangdongqu-consult-input";
+const consultPositionStorageKey = "xiangdongqu-consult-position";
 
 function groupConsultPrompts(prompts: string[]) {
   return prompts.reduce<string[][]>((pages, prompt) => {
@@ -66,6 +73,118 @@ function groupConsultPrompts(prompts: string[]) {
 }
 
 const consultPromptPages = groupConsultPrompts(consultPrompts);
+
+function getDefaultConsultMessages(): ConsultMessage[] {
+  return [
+    {
+      role: "assistant",
+      content: consultWelcome,
+    },
+  ];
+}
+
+function getDefaultConsultPosition(): ConsultWindowPosition {
+  if (typeof window === "undefined") {
+    return { x: 360, y: 84 };
+  }
+
+  return {
+    x: Math.max(14, window.innerWidth - 448),
+    y: 82,
+  };
+}
+
+function clampConsultPosition(position: ConsultWindowPosition): ConsultWindowPosition {
+  if (typeof window === "undefined") {
+    return position;
+  }
+
+  const panelWidth = Math.min(410, window.innerWidth - 24);
+  const panelHeight = Math.min(630, window.innerHeight - 82);
+
+  return {
+    x: Math.min(Math.max(12, position.x), Math.max(12, window.innerWidth - panelWidth - 12)),
+    y: Math.min(Math.max(64, position.y), Math.max(64, window.innerHeight - panelHeight - 12)),
+  };
+}
+
+function readSessionValue(key: string) {
+  if (typeof window === "undefined") {
+    return null;
+  }
+
+  try {
+    return window.sessionStorage.getItem(key);
+  } catch {
+    return null;
+  }
+}
+
+function writeSessionValue(key: string, value: string) {
+  if (typeof window === "undefined") {
+    return;
+  }
+
+  try {
+    window.sessionStorage.setItem(key, value);
+  } catch {
+    // Storage can be unavailable in restricted browser modes; the widget still works in memory.
+  }
+}
+
+function readStoredConsultMessages() {
+  const rawMessages = readSessionValue(consultMessagesStorageKey);
+
+  if (!rawMessages) {
+    return getDefaultConsultMessages();
+  }
+
+  try {
+    const parsed = JSON.parse(rawMessages) as unknown;
+
+    if (
+      Array.isArray(parsed) &&
+      parsed.length > 0 &&
+      parsed.every(
+        (message) =>
+          typeof message === "object" &&
+          message !== null &&
+          ("role" in message ? message.role === "assistant" || message.role === "user" : false) &&
+          ("content" in message ? typeof message.content === "string" : false),
+      )
+    ) {
+      return parsed as ConsultMessage[];
+    }
+  } catch {
+    return getDefaultConsultMessages();
+  }
+
+  return getDefaultConsultMessages();
+}
+
+function readStoredConsultInput() {
+  return readSessionValue(consultInputStorageKey) ?? "";
+}
+
+function readStoredConsultPosition() {
+  const rawPosition = readSessionValue(consultPositionStorageKey);
+
+  if (!rawPosition) {
+    return getDefaultConsultPosition();
+  }
+
+  try {
+    const parsed = JSON.parse(rawPosition) as Partial<ConsultWindowPosition>;
+
+    if (typeof parsed.x === "number" && typeof parsed.y === "number") {
+      return clampConsultPosition(parsed as ConsultWindowPosition);
+    }
+  } catch {
+    return getDefaultConsultPosition();
+  }
+
+  return getDefaultConsultPosition();
+}
 
 function isPathSegment(path: string, segment: string) {
   return path === segment || path.startsWith(`${segment}/`);
@@ -827,23 +946,9 @@ function renderMarkdownMessage(content: string) {
 }
 
 function AiConsultWindow({ open, onClose }: { open: boolean; onClose: () => void }) {
-  const [position, setPosition] = useState(() => {
-    if (typeof window === "undefined") {
-      return { x: 360, y: 84 };
-    }
-
-    return {
-      x: Math.max(14, window.innerWidth - 448),
-      y: 82,
-    };
-  });
-  const [input, setInput] = useState("");
-  const [messages, setMessages] = useState<ConsultMessage[]>([
-    {
-      role: "assistant",
-      content: consultWelcome,
-    },
-  ]);
+  const [position, setPosition] = useState(readStoredConsultPosition);
+  const [input, setInput] = useState(readStoredConsultInput);
+  const [messages, setMessages] = useState<ConsultMessage[]>(readStoredConsultMessages);
   const [isConsulting, setIsConsulting] = useState(false);
   const [promptPageIndex, setPromptPageIndex] = useState(0);
   const dragState = useRef<{
@@ -854,6 +959,18 @@ function AiConsultWindow({ open, onClose }: { open: boolean; onClose: () => void
   } | null>(null);
   const inputRef = useRef<HTMLInputElement>(null);
   const consultBodyRef = useRef<HTMLDivElement>(null);
+
+  useEffect(() => {
+    writeSessionValue(consultPositionStorageKey, JSON.stringify(position));
+  }, [position]);
+
+  useEffect(() => {
+    writeSessionValue(consultInputStorageKey, input);
+  }, [input]);
+
+  useEffect(() => {
+    writeSessionValue(consultMessagesStorageKey, JSON.stringify(messages));
+  }, [messages]);
 
   useEffect(() => {
     if (!open) {

@@ -19,7 +19,7 @@ const homePageData: HomePageData = {
       subtitle: "工程概况与精神传承",
       action: "了解详情",
       href: "/about",
-      image: "/assets/content/feature-about.png",
+      image: "/assets/content/feature-about.jpg",
     },
     {
       id: "guide",
@@ -27,7 +27,7 @@ const homePageData: HomePageData = {
       subtitle: "线上展馆导览",
       action: "进入导览",
       href: "/guide",
-      image: "/assets/content/feature-guide.png",
+      image: "/assets/content/feature-guide.jpg",
     },
     {
       id: "digital",
@@ -35,31 +35,31 @@ const homePageData: HomePageData = {
       subtitle: "数字展馆参观入口",
       action: "进入展馆",
       href: "/digital-guide",
-      image: "/assets/content/feature-digital.png",
+      image: "/assets/content/feature-digital.jpg",
     },
   ],
   videos: [
-    { id: "v1", title: "向东！向东！", duration: "06:18", href: "/videos/v1", image: "/assets/content/video-main.png" },
+    { id: "v1", title: "向东！向东！", duration: "06:18", href: "/videos/v1", image: "/assets/content/video-main.jpg" },
     {
       id: "v2",
       title: "攻坚克难 巧造天河：你不知道的福建向东渠（三）",
       duration: "08:42",
       href: "/videos/v2",
-      image: "/assets/content/video-main.png",
+      image: "/assets/content/video-main.jpg",
     },
     {
       id: "v3",
       title: "攻坚克难 巧造天河：你不知道的福建向东渠（二）",
       duration: "07:25",
       href: "/videos/v3",
-      image: "/assets/content/video-main.png",
+      image: "/assets/content/video-main.jpg",
     },
     {
       id: "v4",
       title: "攻坚克难 巧造天河：你不知道的福建向东渠（一）",
       duration: "09:10",
       href: "/videos/v4",
-      image: "/assets/content/video-main.png",
+      image: "/assets/content/video-main.jpg",
     },
   ],
   documentary: [
@@ -68,14 +68,14 @@ const homePageData: HomePageData = {
       title: "央视纪录片《国家记忆——一渠清水向东流》上集",
       duration: "24:00",
       href: "/documentary/1",
-      image: "/assets/content/documentary-memory.png",
+      image: "/assets/content/documentary-memory.jpg",
     },
     {
       id: "d2",
       title: "央视纪录片《国家记忆——一渠清水向东流》下集",
       duration: "24:00",
       href: "/documentary/2",
-      image: "/assets/content/documentary-memory.png",
+      image: "/assets/content/documentary-memory.jpg",
     },
   ],
   gallery: [
@@ -85,7 +85,7 @@ const homePageData: HomePageData = {
       kind: "image",
       summary: "记录向东渠建设过程中的劳动场景与工程节点。",
       date: "历史影像",
-      image: "/assets/content/gallery-construction.png",
+      image: "/assets/content/gallery-construction.jpg",
     },
     {
       id: "g2",
@@ -93,7 +93,7 @@ const homePageData: HomePageData = {
       kind: "image",
       summary: "展示水渠沿线、渠首及周边山水环境。",
       date: "实景资料",
-      image: "/assets/content/gallery-canal-head.png",
+      image: "/assets/content/gallery-canal-head.jpg",
     },
     {
       id: "g3",
@@ -101,7 +101,7 @@ const homePageData: HomePageData = {
       kind: "image",
       summary: "呈现老照片、手稿与档案扫描件，梳理向东渠建设历程中的珍贵记忆。",
       date: "档案资料",
-      image: "/assets/content/gallery-archive.png",
+      image: "/assets/content/gallery-archive.jpg",
     },
     {
       id: "g4",
@@ -109,7 +109,7 @@ const homePageData: HomePageData = {
       kind: "image",
       summary: "承载展馆陈列、主题展板和纪念活动图片。",
       date: "展馆记录",
-      image: "/assets/content/gallery-exhibition.png",
+      image: "/assets/content/gallery-exhibition.jpg",
     },
     {
       id: "g5",
@@ -117,7 +117,7 @@ const homePageData: HomePageData = {
       kind: "video",
       summary: "收录人物访谈、讲述视频和短片内容。",
       date: "视频资料",
-      image: "/assets/content/gallery-waterline.png",
+      image: "/assets/content/gallery-waterline.jpg",
     },
     {
       id: "g6",
@@ -125,7 +125,7 @@ const homePageData: HomePageData = {
       kind: "image",
       summary: "展示今日水渠沿线风景、村镇变化与生态面貌，延续工程泽被一方的现实图景。",
       date: "今日影像",
-      image: "/assets/content/gallery-waterline.png",
+      image: "/assets/content/gallery-waterline.jpg",
     },
     {
       id: "g7",
@@ -133,7 +133,7 @@ const homePageData: HomePageData = {
       kind: "video",
       summary: "记录工程节点讲解、导览片段与现场影像，帮助观众理解水渠结构与建设细节。",
       date: "导览视频",
-      image: "/assets/content/gallery-waterline.png",
+      image: "/assets/content/gallery-waterline.jpg",
     },
     {
       id: "g8",
@@ -141,7 +141,7 @@ const homePageData: HomePageData = {
       kind: "image",
       summary: "收录研学参观、主题活动和宣传展示照片。",
       date: "活动记录",
-      image: "/assets/content/gallery-exhibition.png",
+      image: "/assets/content/gallery-exhibition.jpg",
     },
   ],
 };

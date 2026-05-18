@@ -891,7 +891,7 @@ button:focus-visible {
   position: absolute;
   inset: 0;
   overflow: hidden;
-  background-image: url("/assets/hero/xiangdongqu-hero-banner.png");
+  background-image: url("/assets/hero/xiangdongqu-hero-banner.jpg");
   background-position: 58% center;
   background-size: cover;
 }
