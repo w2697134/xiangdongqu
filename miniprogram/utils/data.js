@@ -81,8 +81,8 @@ const gallery = [
     id: "g3",
     title: "历史影像",
     kind: "image",
-    summary: "用于收录老照片、手稿、档案扫描件等珍贵资料。",
-    date: "档案整理",
+    summary: "呈现老照片、手稿与档案扫描件，梳理向东渠建设历程中的珍贵记忆。",
+    date: "档案资料",
     image: `${ASSETS}/content/gallery-archive.jpg`
   },
   {
@@ -105,7 +105,7 @@ const gallery = [
     id: "g6",
     title: "沿线风光",
     kind: "image",
-    summary: "上传今日水渠沿线风景、村镇变化与生态面貌。",
+    summary: "展示今日水渠沿线风景、村镇变化与生态面貌，延续工程泽被一方的现实图景。",
     date: "今日影像",
     image: `${ASSETS}/content/gallery-waterline.jpg`
   }

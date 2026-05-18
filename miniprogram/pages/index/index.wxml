@@ -21,7 +21,7 @@
         data-id="{{item.id}}"
         data-title="{{item.label}}"
         data-kind="mixed"
-        bindtap="openPlaceholder"
+        bindtap="openDetail"
       >
         <view class="quick-nav-icon">
           <image src="{{item.icon}}" mode="aspectFit" />
@@ -39,7 +39,7 @@
         data-id="{{item.id}}"
         data-title="{{item.title}}"
         data-kind="mixed"
-        bindtap="openPlaceholder"
+        bindtap="openDetail"
       >
         <image class="card-image" src="{{item.image}}" mode="aspectFill" />
         <view class="feature-copy">
@@ -61,7 +61,7 @@
           data-id="all"
           data-title="向东渠风采"
           data-kind="video"
-          bindtap="openPlaceholder"
+          bindtap="openDetail"
         >全部 ›</text>
       </view>
       <view
@@ -109,7 +109,7 @@
           data-id="all"
           data-title="央视纪录片《国家记忆》"
           data-kind="video"
-          bindtap="openPlaceholder"
+          bindtap="openDetail"
         >全部 ›</text>
       </view>
       <scroll-view class="doc-strip" scroll-x="true" enable-flex="true">
@@ -140,7 +140,7 @@
           data-id="all"
           data-title="图文影像"
           data-kind="mixed"
-          bindtap="openPlaceholder"
+          bindtap="openDetail"
         >查看全部 ›</text>
       </view>
       <scroll-view class="gallery-feed" scroll-x="true" enable-flex="true">
@@ -152,7 +152,7 @@
           data-id="{{item.id}}"
           data-title="{{item.title}}"
           data-kind="{{item.kind}}"
-          bindtap="openPlaceholder"
+          bindtap="openDetail"
         >
           <image class="gallery-image" src="{{item.image}}" mode="aspectFill" />
           <view class="gallery-copy">
@@ -168,7 +168,7 @@
   <view
     wx:if="{{consultOpen}}"
     class="consult-panel"
-    style="transform: translate({{panelX}}px, {{panelY}}px);"
+    style="transform: translateY({{panelY}}px);"
   >
     <view
       class="consult-head"
@@ -203,7 +203,7 @@
         bindinput="onConsultInput"
         bindconfirm="submitConsult"
       />
-      <button disabled="{{isConsulting}}" bindtap="submitConsult">发送</button>
+      <button disabled="{{isConsulting || !consultInput}}" bindtap="submitConsult">发送</button>
     </view>
   </view>
 

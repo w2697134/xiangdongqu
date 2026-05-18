@@ -64,8 +64,8 @@ function createMessage(role, content) {
   };
 }
 
-function createPlaceholderUrl({ type = "feature", id = "", title = "向东渠内容", kind = "mixed" }) {
-  return `/pages/placeholder/placeholder?type=${encodeURIComponent(type)}&id=${encodeURIComponent(id)}&title=${encodeURIComponent(title)}&kind=${encodeURIComponent(kind)}`;
+function createDetailUrl({ type = "feature", id = "", title = "向东渠内容", kind = "mixed" }) {
+  return `/pages/detail/detail?type=${encodeURIComponent(type)}&id=${encodeURIComponent(id)}&title=${encodeURIComponent(title)}&kind=${encodeURIComponent(kind)}`;
 }
 
 Page({
@@ -104,7 +104,7 @@ Page({
 
     if (tab === "guide" || tab === "news") {
       wx.navigateTo({
-        url: createPlaceholderUrl({
+        url: createDetailUrl({
           type: tab,
           id: tab,
           title: tab === "guide" ? "向东渠导览" : "资讯动态",
@@ -120,10 +120,10 @@ Page({
     });
   },
 
-  openPlaceholder(event) {
+  openDetail(event) {
     const dataset = event.currentTarget.dataset;
     wx.navigateTo({
-      url: createPlaceholderUrl({
+      url: createDetailUrl({
         type: dataset.type,
         id: dataset.id,
         title: dataset.title || dataset.label,
@@ -141,7 +141,7 @@ Page({
   openVideo(event) {
     const dataset = event.currentTarget.dataset;
     wx.navigateTo({
-      url: createPlaceholderUrl({
+      url: createDetailUrl({
         type: dataset.type || "video",
         id: dataset.id,
         title: dataset.title || "视频内容",
@@ -175,7 +175,15 @@ Page({
   submitConsult() {
     const question = this.data.consultInput.trim();
 
-    if (!question || this.data.isConsulting) {
+    if (this.data.isConsulting) {
+      return;
+    }
+
+    if (!question) {
+      wx.showToast({
+        title: "请输入咨询内容",
+        icon: "none"
+      });
       return;
     }
 
@@ -203,7 +211,7 @@ Page({
         const ok = response.statusCode >= 200 && response.statusCode < 300;
         const content = ok
           ? payload.content || "这条咨询暂时没有形成有效回复，请换个问法再试。"
-          : payload.error || "智能讲解服务暂时繁忙，请稍后再试。";
+          : "智能讲解服务暂时繁忙，请稍后再试。";
 
         this.setData({
           consultMessages: this.data.consultMessages.concat(createMessage("assistant", content))
@@ -212,7 +220,7 @@ Page({
       fail: () => {
         this.setData({
           consultMessages: this.data.consultMessages.concat(
-            createMessage("assistant", "网络请求失败，请检查小程序 request 合法域名配置。")
+            createMessage("assistant", "智能讲解服务暂时未连通，请稍后再试。")
           )
         });
       },
@@ -244,11 +252,9 @@ Page({
       return;
     }
 
-    const nextX = this.dragState.originX + touch.clientX - this.dragState.startX;
     const nextY = this.dragState.originY + touch.clientY - this.dragState.startY;
 
     this.setData({
-      panelX: Math.max(-36, Math.min(36, nextX)),
       panelY: Math.max(-220, Math.min(0, nextY))
     });
   },

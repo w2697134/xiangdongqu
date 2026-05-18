@@ -2,7 +2,7 @@ import type { HomePageData } from "../types";
 
 const API_BASE_URL = import.meta.env.VITE_API_BASE_URL as string | undefined;
 
-const mockHomePageData: HomePageData = {
+const homePageData: HomePageData = {
   navItems: [
     { id: "panorama", label: "全景水渠", href: "/panorama" },
     { id: "vr", label: "展厅VR", href: "/vr" },
@@ -99,8 +99,8 @@ const mockHomePageData: HomePageData = {
       id: "g3",
       title: "历史影像",
       kind: "image",
-      summary: "用于收录老照片、手稿、档案扫描件等珍贵资料。",
-      date: "档案整理",
+      summary: "呈现老照片、手稿与档案扫描件，梳理向东渠建设历程中的珍贵记忆。",
+      date: "档案资料",
       image: "/assets/content/gallery-archive.png",
     },
     {
@@ -123,7 +123,7 @@ const mockHomePageData: HomePageData = {
       id: "g6",
       title: "沿线风光",
       kind: "image",
-      summary: "上传今日水渠沿线风景、村镇变化与生态面貌。",
+      summary: "展示今日水渠沿线风景、村镇变化与生态面貌，延续工程泽被一方的现实图景。",
       date: "今日影像",
       image: "/assets/content/gallery-waterline.png",
     },
@@ -131,7 +131,7 @@ const mockHomePageData: HomePageData = {
       id: "g7",
       title: "工程细节",
       kind: "video",
-      summary: "适合放置工程节点讲解、导览片段与现场记录。",
+      summary: "记录工程节点讲解、导览片段与现场影像，帮助观众理解水渠结构与建设细节。",
       date: "导览视频",
       image: "/assets/content/gallery-waterline.png",
     },
@@ -148,7 +148,7 @@ const mockHomePageData: HomePageData = {
 
 export async function fetchHomePageData(): Promise<HomePageData> {
   if (!API_BASE_URL) {
-    return mockHomePageData;
+    return homePageData;
   }
 
   try {
@@ -157,12 +157,11 @@ export async function fetchHomePageData(): Promise<HomePageData> {
     });
 
     if (!response.ok) {
-      throw new Error(`Home API returned ${response.status}`);
+      return homePageData;
     }
 
     return (await response.json()) as HomePageData;
-  } catch (error) {
-    console.warn("Falling back to mock home page data.", error);
-    return mockHomePageData;
+  } catch {
+    return homePageData;
   }
 }

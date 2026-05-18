@@ -1,5 +1,5 @@
 {
-  "appid": "wx960344d2e8aec1a1",
+  "appid": "wx0145a11c0a0fc399",
   "compileType": "miniprogram",
   "projectname": "xiangdongqu-miniprogram",
   "miniprogramRoot": "./",
@@ -15,7 +15,7 @@
     "ignoreUploadUnusedFiles": true,
     "compileWorklet": false,
     "uglifyFileName": false,
-    "uploadWithSourceMap": true,
+    "uploadWithSourceMap": false,
     "packNpmManually": false,
     "packNpmRelationList": [],
     "minifyWXSS": true,

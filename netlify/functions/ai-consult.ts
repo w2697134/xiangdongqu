@@ -20,7 +20,7 @@ export default async (req: Request) => {
   const model = Netlify.env.get("AI_MODEL") || "deepseek-chat";
 
   if (!apiKey) {
-    return jsonResponse({ error: "未配置 DEEPSEEK_API_KEY。" }, 500);
+    return jsonResponse({ error: "智能讲解服务暂时繁忙，请稍后再试。" }, 500);
   }
 
   try {
@@ -53,12 +53,12 @@ export default async (req: Request) => {
     };
 
     if (!apiResponse.ok) {
-      return jsonResponse({ error: result.error?.message ?? "智能讲解服务请求失败。" }, apiResponse.status);
+      return jsonResponse({ error: "智能讲解服务暂时繁忙，请稍后再试。" }, apiResponse.status);
     }
 
     return jsonResponse({ content: result.choices?.[0]?.message?.content ?? "" });
-  } catch (error) {
-    return jsonResponse({ error: error instanceof Error ? error.message : "智能讲解服务暂时繁忙，请稍后再试。" }, 500);
+  } catch {
+    return jsonResponse({ error: "智能讲解服务暂时繁忙，请稍后再试。" }, 500);
   }
 };
 

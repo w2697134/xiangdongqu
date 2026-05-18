@@ -1,7 +1,7 @@
 {
   "pages": [
     "pages/index/index",
-    "pages/placeholder/placeholder"
+    "pages/detail/detail"
   ],
   "window": {
     "navigationBarTitleText": "向东渠事迹数字馆",

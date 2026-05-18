@@ -1,13 +1,13 @@
-<view class="placeholder-page">
-  <view class="placeholder-hero">
-    <view class="placeholder-copy">
-      <text class="placeholder-eyebrow">{{eyebrow}}</text>
-      <text class="placeholder-title">{{title}}</text>
-      <text class="placeholder-status">{{status}}</text>
-      <text class="placeholder-description">{{description}}</text>
+<view class="detail-page">
+  <view class="detail-hero">
+    <view class="detail-copy">
+      <text class="detail-eyebrow">{{eyebrow}}</text>
+      <text class="detail-title">{{title}}</text>
+      <text class="detail-status">{{status}}</text>
+      <text class="detail-description">{{description}}</text>
     </view>
 
-    <view class="placeholder-art" aria-hidden="true">
+    <view class="detail-art" aria-hidden="true">
       <view class="paper paper-back"></view>
       <view class="paper paper-front">
         <view class="paper-line line-one"></view>
@@ -22,19 +22,28 @@
   <view class="status-card">
     <view class="status-icon">{{label}}</view>
     <view class="status-copy">
-      <text>线上展陈页</text>
-      <text>围绕栏目主题呈现导览说明、档案线索与影像资料入口。</text>
+      <text>栏目导览</text>
+      <text>结合栏目主题呈现导览说明、档案线索与影像资料。</text>
     </view>
   </view>
 
-  <view class="placeholder-actions">
+  <view class="detail-list">
+    <view wx:for="{{details}}" wx:key="title" class="detail-card">
+      <text class="detail-title">{{item.title}}</text>
+      <text class="detail-text">{{item.text}}</text>
+    </view>
+  </view>
+
+  <view class="detail-note">{{note}}</view>
+
+  <view class="detail-actions">
     <button class="action primary" bindtap="goHome">返回首页</button>
   </view>
 
   <view
     wx:if="{{consultOpen}}"
     class="consult-panel"
-    style="transform: translate({{panelX}}px, {{panelY}}px);"
+    style="transform: translateY({{panelY}}px);"
   >
     <view
       class="consult-head"
@@ -69,7 +78,7 @@
         bindinput="onConsultInput"
         bindconfirm="submitConsult"
       />
-      <button disabled="{{isConsulting}}" bindtap="submitConsult">发送</button>
+      <button disabled="{{isConsulting || !consultInput}}" bindtap="submitConsult">发送</button>
     </view>
   </view>
 
