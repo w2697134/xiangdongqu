@@ -47,6 +47,25 @@ const iconMap = {
 
 const consultWelcome = "您好，我是向东渠数字馆讲解助手。可以问我工程概况、通水时间、向东渠精神，也可以让我帮您找到视频、纪录片和图文影像入口。";
 const consultPrompts = ["向东渠工程概况", "向东渠精神是什么？", "数字馆有哪些入口？", "纪录片在哪里看？"];
+const consultOpenStorageKey = "xiangdongqu-consult-open";
+
+function groupConsultPrompts(prompts: string[]) {
+  return prompts.reduce<string[][]>((pages, prompt) => {
+    const weight = prompt.length >= 9 ? 2 : 1;
+    const currentPage = pages[pages.length - 1];
+    const currentWeight = currentPage?.reduce((total, item) => total + (item.length >= 9 ? 2 : 1), 0) ?? 0;
+
+    if (!currentPage || currentPage.length >= 3 || currentWeight + weight > 3) {
+      pages.push([prompt]);
+      return pages;
+    }
+
+    currentPage.push(prompt);
+    return pages;
+  }, []);
+}
+
+const consultPromptPages = groupConsultPrompts(consultPrompts);
 
 function isPathSegment(path: string, segment: string) {
   return path === segment || path.startsWith(`${segment}/`);
@@ -451,11 +470,15 @@ function App() {
 
 function TopNav({ data }: { data: HomePageData }) {
   const [activeItem, setActiveItem] = useState<TopNavKey>(() => getTopNavActiveItem(data));
-  const [isConsultOpen, setIsConsultOpen] = useState(false);
+  const [isConsultOpen, setIsConsultOpen] = useState(() => sessionStorage.getItem(consultOpenStorageKey) === "true");
   const linkClass = (item: Exclude<TopNavKey, "none">) =>
     item === activeItem ? "top-nav-link active" : "top-nav-link";
   const mobileTabClass = (item: Exclude<TopNavKey, "none">) =>
     item === activeItem ? "mobile-tab-link active" : "mobile-tab-link";
+  const updateConsultOpen = (nextOpen: boolean) => {
+    setIsConsultOpen(nextOpen);
+    sessionStorage.setItem(consultOpenStorageKey, String(nextOpen));
+  };
 
   return (
     <>
@@ -478,7 +501,7 @@ function TopNav({ data }: { data: HomePageData }) {
             className={`${linkClass("ai")} ai`}
             onClick={() => {
               setActiveItem("ai");
-              setIsConsultOpen(true);
+              updateConsultOpen(true);
             }}
             type="button"
           >
@@ -502,7 +525,7 @@ function TopNav({ data }: { data: HomePageData }) {
           className={mobileTabClass("ai")}
           onClick={() => {
             setActiveItem("ai");
-            setIsConsultOpen(true);
+            updateConsultOpen(true);
           }}
           type="button"
         >
@@ -515,7 +538,7 @@ function TopNav({ data }: { data: HomePageData }) {
           </span>
         </button>
       </nav>
-      <AiConsultWindow open={isConsultOpen} onClose={() => setIsConsultOpen(false)} />
+      <AiConsultWindow open={isConsultOpen} onClose={() => updateConsultOpen(false)} />
     </>
   );
 }
@@ -822,12 +845,15 @@ function AiConsultWindow({ open, onClose }: { open: boolean; onClose: () => void
     },
   ]);
   const [isConsulting, setIsConsulting] = useState(false);
+  const [promptPageIndex, setPromptPageIndex] = useState(0);
   const dragState = useRef<{
     startX: number;
     startY: number;
     originX: number;
     originY: number;
   } | null>(null);
+  const inputRef = useRef<HTMLInputElement>(null);
+  const consultBodyRef = useRef<HTMLDivElement>(null);
 
   useEffect(() => {
     if (!open) {
@@ -842,7 +868,7 @@ function AiConsultWindow({ open, onClose }: { open: boolean; onClose: () => void
       const nextX = dragState.current.originX + event.clientX - dragState.current.startX;
       const nextY = dragState.current.originY + event.clientY - dragState.current.startY;
       const panelWidth = Math.min(410, window.innerWidth - 24);
-      const panelHeight = Math.min(560, window.innerHeight - 82);
+      const panelHeight = Math.min(630, window.innerHeight - 82);
       setPosition({
         x: Math.min(Math.max(12, nextX), Math.max(12, window.innerWidth - panelWidth - 12)),
         y: Math.min(Math.max(64, nextY), Math.max(64, window.innerHeight - panelHeight - 12)),
@@ -862,9 +888,55 @@ function AiConsultWindow({ open, onClose }: { open: boolean; onClose: () => void
     };
   }, [open]);
 
+  useEffect(() => {
+    if (!open) {
+      return;
+    }
+
+    setPromptPageIndex((currentPage) => {
+      if (consultPromptPages.length < 2) {
+        return 0;
+      }
+
+      const nextPage = Math.floor(Math.random() * consultPromptPages.length);
+      return nextPage === currentPage ? (nextPage + 1) % consultPromptPages.length : nextPage;
+    });
+  }, [open]);
+
+  useEffect(() => {
+    if (!open) {
+      return;
+    }
+
+    window.requestAnimationFrame(() => {
+      const consultBody = consultBodyRef.current;
+
+      if (consultBody) {
+        consultBody.scrollTop = consultBody.scrollHeight;
+      }
+    });
+  }, [open, messages, isConsulting]);
+
   if (!open) {
     return null;
   }
+
+  const selectPrompt = (question: string) => {
+    setInput((currentInput) => {
+      const separator = currentInput && !/\s$/.test(currentInput) ? " " : "";
+      const nextInput = `${currentInput}${separator}${question}`;
+
+      window.requestAnimationFrame(() => {
+        inputRef.current?.focus();
+        inputRef.current?.setSelectionRange(nextInput.length, nextInput.length);
+      });
+
+      return nextInput;
+    });
+  };
+
+  const activePromptPage = consultPromptPages[promptPageIndex] ?? consultPromptPages[0] ?? [];
+  const promptColumnCount = Math.max(1, activePromptPage.length);
 
   const submitQuestion = async (question: string) => {
     const normalized = question.trim();
@@ -927,16 +999,18 @@ function AiConsultWindow({ open, onClose }: { open: boolean; onClose: () => void
           <X size={18} />
         </button>
       </div>
-      <div className="ai-consult-body" aria-busy={isConsulting}>
+      <div className="ai-consult-body" aria-busy={isConsulting} ref={consultBodyRef}>
         {messages.map((message, index) => (
           <div className={message.role === "assistant" ? "ai-message assistant" : "ai-message user"} key={`${message.role}-${index}`}>
             {renderMarkdownMessage(message.content)}
           </div>
         ))}
         {isConsulting ? <p className="ai-message assistant muted">回复中</p> : null}
-        <div className="ai-consult-prompts" aria-label="快捷问题">
-          {consultPrompts.map((question) => (
-            <button disabled={isConsulting} key={question} onClick={() => submitQuestion(question)} type="button">
+      </div>
+      <div className="ai-consult-prompts-shell">
+        <div className="ai-consult-prompts" aria-label="快捷问题" style={{ gridTemplateColumns: `repeat(${promptColumnCount}, minmax(0, 1fr))` }}>
+          {activePromptPage.map((question) => (
+            <button key={question} onClick={() => selectPrompt(question)} title={question} type="button">
               {question}
             </button>
           ))}
@@ -951,6 +1025,7 @@ function AiConsultWindow({ open, onClose }: { open: boolean; onClose: () => void
       >
         <input
           aria-label="输入咨询问题"
+          ref={inputRef}
           onChange={(event) => setInput(event.target.value)}
           placeholder="输入想了解的内容"
           value={input}
