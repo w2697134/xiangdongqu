@@ -1,5 +1,5 @@
 import type { IncomingMessage, ServerResponse } from "node:http";
-import { buildConsultMessages, hasUserConsultMessage, type RawConsultMessage } from "../netlify/functions/consult-agent";
+import { buildConsultMessages, hasUserConsultMessage, type RawConsultMessage } from "../src/consult-agent";
 
 const MAX_BODY_SIZE = 32_000;
 
