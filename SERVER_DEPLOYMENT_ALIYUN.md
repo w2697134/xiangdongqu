@@ -22,11 +22,9 @@
 重要最新状态：
 
 - DNS 已接上阿里云服务器：`dreamlab.website -> 47.100.192.144`
-- 服务器按 IP 访问正常：`http://47.100.192.144/` 返回 `200 OK`
-- 服务器按 IP 访问 HTTPS 正常：`https://47.100.192.144/ -k` 返回 `200 OK`
-- 但域名访问当前被备案/接入检查拦截：`http://dreamlab.website/` 返回 `403 Forbidden`，响应头 `Server: Beaver`
-- `https://dreamlab.website/` 当前表现为连接被重置
-- 判断：这不是 Node 服务或 DNS 没接上，而是大陆云服务器使用域名访问需要网站备案/接入备案通过后才能正常放行。
+- DNS 已接上阿里云服务器：`dreamlab.website -> 47.100.192.144`
+- 当前本机验证 `https://dreamlab.website/` 和 `https://www.dreamlab.website/` 返回 `200 OK`
+- 手机端如无法打开，优先判断为手机网络、运营商 DNS 缓存、微信内置浏览器缓存或备案/接入状态在不同网络侧同步不一致；不是 Node 服务或 DNS 没接上。
 
 ## 服务器信息
 
@@ -399,16 +397,16 @@ assets/hero/xiangdongqu-hero-banner.jpg
 assets/content/feature-about.jpg
 ```
 
-2026-05-18 18:24 已验证：
+2026-05-18 19:14 已验证：
 
 ```text
-http://47.100.192.144/              200 OK
-https://47.100.192.144/ -k          200 OK
-https://dreamlab.website/           curl: connection reset
-https://www.dreamlab.website/       curl: connection reset
+dreamlab.website -> 47.100.192.144
+www.dreamlab.website -> 47.100.192.144
+https://dreamlab.website/           200 OK
+https://www.dreamlab.website/       200 OK
 ```
 
-判断：服务本身正常监听 `0.0.0.0:80` 和 `0.0.0.0:443`，域名 HTTPS 直连重置更像备案/接入侧拦截或本地网络路径问题，不是本次 Node 构建失败。
+判断：服务本身和域名 HTTPS 当前从本机可访问；如果手机端打不开，优先排查手机浏览器/微信缓存、手机网络 DNS 缓存、Wi-Fi 与蜂窝网络路径差异。
 
 ## Vercel 和 Netlify 状态
 
