@@ -4,5 +4,5 @@
     "types": ["node"],
     "lib": ["DOM", "DOM.Iterable", "ES2022"]
   },
-  "include": ["vite.config.ts", "netlify/functions/**/*.ts"]
+  "include": ["vite.config.ts", "netlify/functions/**/*.ts", "api/**/*.ts"]
 }

@@ -1,0 +1,21 @@
+{
+  "$schema": "https://openapi.vercel.sh/vercel.json",
+  "framework": "vite",
+  "buildCommand": "npm run build",
+  "outputDirectory": "dist",
+  "functions": {
+    "api/ai-consult.ts": {
+      "maxDuration": 20
+    }
+  },
+  "rewrites": [
+    {
+      "source": "/api/ai-consult",
+      "destination": "/api/ai-consult"
+    },
+    {
+      "source": "/(.*)",
+      "destination": "/index.html"
+    }
+  ]
+}
