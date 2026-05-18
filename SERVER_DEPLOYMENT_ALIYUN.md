@@ -56,7 +56,7 @@ Local workspace: C:\Users\admin\Documents\xiangdongqu
 Server workspace: /www/wwwroot/xiangdongqu
 Branch: main
 Remote: https://github.com/w2697134/xiangdongqu.git
-Latest deployment commit at time of this document: 3d93a73 Refine AI consult window behavior
+Latest deployment commit at time of this document: 707c839 Persist consult widget and optimize assets
 ```
 
 正式服务器通过 GitHub 拉取代码。推送本地 `main` 后，服务器不会自动更新，需要通过 SSH 或 Workbench 进入服务器执行拉取、安装、构建和重启。
@@ -390,12 +390,25 @@ echo wbkeyinputok
 
 ```text
 ssh -i C:\Users\admin\.ssh\id_ed25519 admin@47.100.192.144
-server git HEAD: 3d93a73
+server git HEAD: 707c839
 systemd xiangdongqu: active
 current served assets:
-assets/index-B-9H3CPJ.js
-assets/index-BK_crrJ6.css
+assets/index-Dtyc-5J4.js
+assets/index-C4wAlcxX.css
+assets/hero/xiangdongqu-hero-banner.jpg
+assets/content/feature-about.jpg
 ```
+
+2026-05-18 18:24 已验证：
+
+```text
+http://47.100.192.144/              200 OK
+https://47.100.192.144/ -k          200 OK
+https://dreamlab.website/           curl: connection reset
+https://www.dreamlab.website/       curl: connection reset
+```
+
+判断：服务本身正常监听 `0.0.0.0:80` 和 `0.0.0.0:443`，域名 HTTPS 直连重置更像备案/接入侧拦截或本地网络路径问题，不是本次 Node 构建失败。
 
 ## Vercel 和 Netlify 状态
 
@@ -403,15 +416,15 @@ assets/index-BK_crrJ6.css
 - Netlify 不再作为主部署平台。
 - 不要再把 `dreamlab.website` 的 DNS 改回 Vercel，除非用户明确要求回滚。
 
-## 小程序遗留项
+## 小程序状态
 
-`miniprogram/utils/data.js` 里如果仍有旧 Netlify 地址，应改为：
+`miniprogram/utils/data.js` 当前已改为正式站 AI 咨询接口：
 
 ```text
 https://dreamlab.website/api/ai-consult
 ```
 
-微信公众平台 request 合法域名也应配置：
+微信公众平台 request 合法域名仍需在备案/审核通过后配置：
 
 ```text
 https://dreamlab.website
