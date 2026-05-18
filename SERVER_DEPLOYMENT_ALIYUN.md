@@ -56,10 +56,20 @@ Local workspace: C:\Users\admin\Documents\xiangdongqu
 Server workspace: /www/wwwroot/xiangdongqu
 Branch: main
 Remote: https://github.com/w2697134/xiangdongqu.git
-Latest deployment commit at time of this document: 31c5d08 Add self-hosted HTTPS support
+Latest deployment commit at time of this document: 3d93a73 Refine AI consult window behavior
 ```
 
-正式服务器通过 GitHub 拉取代码。推送本地 `main` 后，服务器不会自动更新，需要进入服务器执行拉取、安装、构建和重启。
+正式服务器通过 GitHub 拉取代码。推送本地 `main` 后，服务器不会自动更新，需要通过 SSH 或 Workbench 进入服务器执行拉取、安装、构建和重启。
+
+当前优先部署通道：
+
+```text
+SSH user: admin
+Host: 47.100.192.144
+Local identity path: C:\Users\admin\.ssh\id_ed25519
+```
+
+已验证本机可直接 SSH 登录并执行部署命令。不要把私钥内容写进任何文档或聊天。
 
 ## Node 自托管服务
 
@@ -257,7 +267,13 @@ git commit -m "<message>"
 git push origin main
 ```
 
-在服务器更新正式站点：
+推荐：从本机通过 SSH 触发服务器更新正式站点：
+
+```powershell
+ssh -i $env:USERPROFILE\.ssh\id_ed25519 admin@47.100.192.144 "cd /www/wwwroot/xiangdongqu && sudo git pull --ff-only && sudo npm ci && sudo npm run build:self-host && sudo systemctl restart xiangdongqu && systemctl is-active xiangdongqu && git rev-parse --short HEAD"
+```
+
+备用：在服务器终端里更新正式站点：
 
 ```bash
 sudo git config --global --add safe.directory /www/wwwroot/xiangdongqu
@@ -360,7 +376,7 @@ Chrome 渲染检查中页面为 HTTPS，正文能看到：
 
 ## Workbench 注意事项
 
-用户要求尽量不要用桌面控制。服务器操作优先使用 Chrome 直连 Workbench。
+用户要求尽量不要用桌面控制。服务器操作优先使用本机 SSH；SSH 不可用时再使用 Chrome 直连 Workbench。
 
 Workbench 里逐字符 keyDown/keyUp 可以输入简单命令，例如：
 
@@ -369,6 +385,17 @@ echo wbkeyinputok
 ```
 
 但逐字符输入长命令时，符号如 `/`、`-`、`|`、引号可能丢失。长命令建议用 CDP `Input.insertText` 输入文本，然后单独发送 Enter。此前已验证 `Input.insertText` 在 Workbench 可用。
+
+2026-05-18 已验证：
+
+```text
+ssh -i C:\Users\admin\.ssh\id_ed25519 admin@47.100.192.144
+server git HEAD: 3d93a73
+systemd xiangdongqu: active
+current served assets:
+assets/index-B-9H3CPJ.js
+assets/index-BK_crrJ6.css
+```
 
 ## Vercel 和 Netlify 状态
 
